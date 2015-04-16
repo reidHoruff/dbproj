@@ -1,0 +1,3 @@
+Host: http://130.211.119.23/phpmyadmin
+User: root
+Pass: 0UrP4s534r
