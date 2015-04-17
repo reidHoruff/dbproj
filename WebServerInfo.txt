@@ -1,3 +1,5 @@
 Host: http://130.211.119.23/phpmyadmin
+
+Must select localhost from dropdown
 User: root
 Pass: 0UrP4s534r
