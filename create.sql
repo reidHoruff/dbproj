@@ -4,8 +4,11 @@ use dbproj;
 
 create table profs (
   id int not null AUTO_INCREMENT,
-  first_name char(255) check (datalength(first_name) > 1),
-  last_name char(255) check (datalength(last_name) > 1),
+  first_name char(255) not null,
+  last_name char(255) not null,
+  title char(255) not null,
+  type char (255) not null, /* [tenured, untenured, fti, gpti] */
+  date_joined char(255) not null,
   primary key (id)
 );
 

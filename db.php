@@ -5,7 +5,7 @@
  * but thats fine.
  */
 
-$username = "root";
+$username = "root3";
 $password = "root";
 $server = "localhost";
 $dbname = 'dbproj';
@@ -18,8 +18,8 @@ if (!$conn) {
 
 mysql_select_db($dbname);
 
-function create_professor($fname, $lname) {
-  mysql_query("insert into profs (first_name, last_name) values ('$fname', '$lname');");
+function create_professor($fname, $lname, $title, $type, $date_joined) {
+  mysql_query("insert into profs (first_name, last_name, title, type, date_joined) values ('$fname', '$lname', '$title', '$type', '$date_joined');");
 }
 
 function create_book($title, $publisher, $edition, $isbn) {

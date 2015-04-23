@@ -14,7 +14,7 @@ if (isset($_POST['action'])) {
    * action for adding a professor 
    */
   if ($_POST['action'] == 'add_prof') {
-    create_professor($_POST['fname'], $_POST['lname']); 
+    create_professor($_POST['fname'], $_POST['lname'], $_POST['title'], $_POST['type'], $_POST['date_joined']); 
     set_message("professor successfully added.");
   } 
   
@@ -77,9 +77,17 @@ EOL;
           <br/>
           Last name: <input type="text" name="lname"/>
           <br/>
-          <input type="radio" name="tenured" value="true">Tenured</input>
+          Title: <input type="text" name="title"/>
           <br>
-          <input type="radio" name="tenured" value="false" checked=true>Untenured</input>
+          Date Joined: <input type="text" name="date_joined"/>
+          <br>
+          Type:
+          <select name="type">
+            <option value="tenured">Tenured Professor</option>
+            <option value="untenured">Untenured Professor</option>
+            <option value="fti">FTI</option>
+            <option value="gpti">GPTI</option>
+          </select>
           <br>
           <button type="submit" name="action" value="add_prof">submit</button>
         </form>
