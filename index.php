@@ -34,8 +34,7 @@ if (isset($_POST['action'])) {
     <div class="header border">
         <h2>Course Management System</h2>
         <a href="#">link1</a>
-        <a href="#">link1</a>
-        <a href="#">link1</a>
+        <a href="#">link2</a>
     </div>
 
     <div class="content">
