@@ -1,26 +1,32 @@
 <?php
 require_once 'db.php';
 
-$error = null;
 $message = null;
 
-function set_error($e) { 
-  global $error;
-  $error = $e; 
-}
 function set_message($m) {
   global $message;
   $message = $m; 
 }
 
 if (isset($_POST['action'])) {
+
+  /* 
+   * action for adding a professor 
+   */
   if ($_POST['action'] == 'add_prof') {
     create_professor($_POST['fname'], $_POST['lname']); 
     set_message("professor successfully added.");
-  } else if ($_POST['action'] == 'add_book') {
+  } 
+  
+  /*
+   * action for adding a book
+   */
+  else if ($_POST['action'] == 'add_book') {
     create_book($_POST['title'], $_POST['publisher'], $_POST['edition'], $_POST['isbn']); 
     set_message("text book successfully added.");
-  } else {
+  } 
+  
+  else {
   }
 }
 
@@ -40,20 +46,27 @@ if (isset($_POST['action'])) {
     <div class="content">
 
 <?php 
+/*
+ * this displays the last error that mySQL encountered, if any,
+ * and displays it. else it displays the user message if any.
+ *
+ * This works pretty well assuming that a single query/operation is
+ * mode per POST.
+ */
 $mysql_error = mysql_error($conn);
-  if ($mysql_error) {
-    echo <<<EOL
-      <div class="error">
-        <h2>{$mysql_error}</h2>
-      </div>
+if ($mysql_error) {
+  echo <<<EOL
+    <div class="error">
+      <h2>{$mysql_error}</h2>
+    </div>
 EOL;
-  } else if ($message) {
-    echo <<<EOL
-      <div class="message">
-        <h2>{$message}</h2>
-      </div>
+} else if ($message) {
+  echo <<<EOL
+    <div class="message">
+      <h2>{$message}</h2>
+    </div>
 EOL;
-  }
+}
 ?>
 
       <!-- add professor -->
@@ -113,7 +126,6 @@ EOL;
           ?>
         </ul>
       </div>
-
 
     </div>
   </body>

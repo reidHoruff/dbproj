@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * everything here is susceptible to injection
+ * but thats fine.
+ */
+
 $username = "root";
 $password = "root";
 $server = "localhost";
@@ -28,5 +33,3 @@ function get_all_profs() {
 function get_all_books() {
   return mysql_query("select * from books;");
 }
-
-?>
