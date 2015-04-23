@@ -1,0 +1,61 @@
+body {
+  margin: 0px;
+}
+
+h3 {
+  margin: 0px;
+}
+
+form {
+  margin: 0px;
+  padding: 0px;
+}
+
+input {
+  margin-left: 0px;
+}
+
+.content {
+  padding: 8px;
+}
+
+.section {
+  padding-top: 18px;
+  padding: 8px;
+  border: 1px solid #aaa;
+}
+
+.section-title {
+  margin-top: 16px;
+}
+
+.header {
+  padding: 8px;
+  margin-bottom: 22px;
+  background: #eee;
+  border: 1px solid #aaa;
+}
+
+.message {
+  border: 1px solid #4caf50;
+  background: #4caf50;
+  padding: 8px;
+  color: white;
+}
+
+.message > h2 {
+  padding: 0px;
+  margin: 0px;
+}
+
+.error {
+  border: 1px solid #ff1744;
+  background: #ff1744;
+  padding: 8px;
+  color: white;
+}
+
+.error > h2 {
+  padding: 0px;
+  margin: 0px;
+}
