@@ -23,13 +23,10 @@ create table sections (
 
 create table courses (
   id int not null AUTO_INCREMENT,
-  section char(100) not null,
-  capacity int not null,
-  days char(100) not null,
-  enrollment int not null,
-  room char(100) not null,
-  time char(255) not null,
-  crn char(255) not null,
+  course_num char(100) not null,
+  title char(100) not null,
+  description char(100),
+  catalog int not null,
   primary key (id)
 );
 
