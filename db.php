@@ -26,10 +26,18 @@ function create_book($title, $publisher, $edition, $isbn) {
   mysql_query("insert into books (title, publisher, edition, isbn) values ('$title', '$publisher', '$edition', '$isbn');");
 }
 
+function create_course($c_number, $title, $desc){
+  mysql_query("insert into courses (course_num, title, description) values ('$c_number', '$title', '$desc')");
+}
+
 function get_all_profs() {
   return mysql_query("select * from profs;");
 }
 
 function get_all_books() {
   return mysql_query("select * from books;");
+}
+
+function get_all_courses(){
+  return mysql_query("select * from courses;");
 }

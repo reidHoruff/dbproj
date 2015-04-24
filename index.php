@@ -38,7 +38,15 @@ if (isset($_POST['action'])) {
   else if ($_POST['action'] == 'add_book') {
     create_book($_POST['title'], $_POST['publisher'], $_POST['edition'], $_POST['isbn']); 
     set_message("Text book successfully added.");
-  } 
+  }
+
+  /*
+   * action for adding a course
+   */
+  else if ($_POST['action'] == 'add_course') {
+    create_course($_POST['c_number'], $_POST['title'], $_POST['desc']); 
+    set_message("course successfully added.");
+  }  
   
   else {
   }
@@ -139,6 +147,20 @@ set_error(null);
           <button type="submit" name="action" value="add_book">submit</button>
         </form>
       </div>
+	  
+	  <!-- add course -->
+      <h3 class="section-title">Add Course:</h3>
+      <div class="section">
+        <form method="post" action="/dbproj/index.php">
+          Course Number: <input type="text" name="c_number"/>
+          <br/>
+          title: <input type="text" name="title"/>
+          <br/>
+          Description: <input type="text" name="desc">
+		  <br/>
+		  <button type="submit" name="action" value="add_course">submit</button>
+        </form>
+      </div>
 
       <!-- list profs -->
       <h3 class="section-title">List Professors:</h3>
@@ -161,6 +183,19 @@ set_error(null);
             $books = get_all_books();
             while ($row = mysql_fetch_assoc($books)) {
               echo "<li>{$row['title']} : {$row['isbn']}</li>";
+            }
+          ?>
+        </ul>
+      </div>
+	  
+	  <!-- list courses -->
+      <h3 class="section-title">List Course:</h3>
+      <div class="section">
+        <ul>
+          <?php
+            $course = get_all_courses();
+            while ($row = mysql_fetch_assoc($course)) {
+              echo "<li>{$row['course_num']} {$row['title']} {$row['description']}</li>";
             }
           ?>
         </ul>
