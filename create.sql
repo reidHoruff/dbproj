@@ -13,17 +13,15 @@ create table profs (
 );
 
 create table courses (
-  id int not null AUTO_INCREMENT,
   course_num char(100) not null,
   title char(100) not null,
   description char(100),
   catalog int not null,
-  primary key (id)
+  primary key (course_num)
 );
 
 create table sections (
-  id int not null AUTO_INCREMENT,
-  cId int not null,
+  course_num char(100) not null,
   section char(100) not null,
   capacity int not null,
   days char(100) not null,
@@ -31,15 +29,14 @@ create table sections (
   room char(100) not null,
   time char(255) not null,
   crn char(255) not null,
-  primary key (id),
-  foreign key (cId) references courses(id)
+  primary key (crn),
+  foreign key (course_num) references courses(course_num)
 );
 
 create table books (
-  id int not null AUTO_INCREMENT,
+  isbn char(255) not null,
   title char(255) not null,
   publisher char(255) not null,
   edition char(255) not null,
-  isbn char(255) not null,
-  primary key (id)
+  primary key (isbn)
 );
