@@ -1,5 +1,6 @@
 body {
   margin: 0px;
+  font-family: arial;
 }
 
 h3 {
@@ -11,16 +12,17 @@ form {
   padding: 0px;
 }
 
-input {
+input[type="text"] {
+  font-size: 14px;
   margin: 2px;
   padding: 2px;
 }
 
 button {
-  height: 22px;
   padding: 4px;
   margin: 4px;
-  margin-left:0px; 
+  margin-left: 0px;
+  background: lightgrey;
 }
 
 .content {

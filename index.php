@@ -132,7 +132,7 @@ set_error(null);
           <br/>
           Publisher: <input type="text" name="publisher"/>
           <br/>
-          edition: <input type="text" name="edition"/>
+          Edition: <input type="text" name="edition"/>
           <br/>
           ISBN: <input type="text" name="isbn"/>
           <br/>
