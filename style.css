@@ -12,7 +12,15 @@ form {
 }
 
 input {
-  margin-left: 0px;
+  margin: 2px;
+  padding: 2px;
+}
+
+button {
+  height: 22px;
+  padding: 4px;
+  margin: 4px;
+  margin-left:0px; 
 }
 
 .content {

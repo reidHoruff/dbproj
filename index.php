@@ -1,11 +1,25 @@
 <?php
+
+session_start();
+
 require_once 'db.php';
 
-$message = null;
-
 function set_message($m) {
-  global $message;
-  $message = $m; 
+  global $_SESSION;
+  $_SESSION['message'] = $m;
+}
+
+function get_message() {
+  return $_SESSION['message'];
+}
+
+function set_error($e) {
+  global $_SESSION;
+  $_SESSION['error'] = $e;
+}
+
+function get_error() {
+  return $_SESSION['error'];
 }
 
 if (isset($_POST['action'])) {
@@ -15,7 +29,7 @@ if (isset($_POST['action'])) {
    */
   if ($_POST['action'] == 'add_prof') {
     create_professor($_POST['fname'], $_POST['lname'], $_POST['title'], $_POST['type'], $_POST['date_joined']); 
-    set_message("professor successfully added.");
+    set_message("Teacher successfully added.");
   } 
   
   /*
@@ -23,12 +37,22 @@ if (isset($_POST['action'])) {
    */
   else if ($_POST['action'] == 'add_book') {
     create_book($_POST['title'], $_POST['publisher'], $_POST['edition'], $_POST['isbn']); 
-    set_message("text book successfully added.");
+    set_message("Text book successfully added.");
   } 
   
   else {
   }
-}
+
+  /*
+   * after POST save messages in session and redirect
+   * to same page but with a GET to avoid
+   * annoying POST resubmission messages
+   * on the browser's end.
+   */
+  set_error(mysql_error());
+  header("Location: index.php");
+  die();
+} 
 
 ?>
 
@@ -53,7 +77,8 @@ if (isset($_POST['action'])) {
  * This works pretty well assuming that a single query/operation is
  * mode per POST.
  */
-$mysql_error = mysql_error($conn);
+$mysql_error = get_error();
+$message = get_message();
 if ($mysql_error) {
   echo <<<EOL
     <div class="error">
@@ -67,10 +92,16 @@ EOL;
     </div>
 EOL;
 }
-?>
 
+/*
+ * now clear messages...
+ */
+set_message(null);
+set_error(null);
+
+?>
       <!-- add professor -->
-      <h3 class="section-title">Add Professor:</h3>
+      <h3 class="section-title">Add Instructor:</h3>
       <div class="section">
         <form method="post" action="/dbproj/index.php">
           First name: <input type="text" name="fname"/>
