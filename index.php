@@ -1,8 +1,8 @@
 <?php
-
 session_start();
 
 require_once 'db.php';
+require_once 'helpers.php';
 
 function set_message($m) {
   global $_SESSION;
@@ -22,6 +22,9 @@ function get_error() {
   return $_SESSION['error'];
 }
 
+/*
+ * this block handels all POST requests
+ */
 if (isset($_POST['action'])) {
 
   /* 
@@ -62,22 +65,12 @@ if (isset($_POST['action'])) {
   die();
 } 
 
-?>
+/* 
+ * begin HTML rendering... 
+ */
+gen_dom();
+gen_body();
 
-<html>
-  <head>
-    <link href="style.css" rel="stylesheet" type="text/css">
-  </head>
-  <body>
-    <div class="header border">
-        <h2>Course Management System</h2>
-        <a href="#">link1</a>
-        <a href="#">link2</a>
-    </div>
-
-    <div class="content">
-
-<?php 
 /*
  * this displays the last error that mySQL encountered, if any,
  * and displays it. else it displays the user message if any.
@@ -87,18 +80,17 @@ if (isset($_POST['action'])) {
  */
 $mysql_error = get_error();
 $message = get_message();
+
 if ($mysql_error) {
-  echo <<<EOL
-    <div class="error">
-      <h2>{$mysql_error}</h2>
-    </div>
-EOL;
-} else if ($message) {
-  echo <<<EOL
-    <div class="message">
-      <h2>{$message}</h2>
-    </div>
-EOL;
+  push_div('error');
+  gen_h3('', $mysql_error);
+  pop_dom();
+} 
+
+else if ($message) {
+  push_div('message');
+  gen_h3('', $message);
+  pop_dom();
 }
 
 /*
@@ -107,100 +99,95 @@ EOL;
 set_message(null);
 set_error(null);
 
-?>
-      <!-- add professor -->
-      <h3 class="section-title">Add Instructor:</h3>
-      <div class="section">
-        <form method="post" action="/dbproj/index.php">
-          First name: <input type="text" name="fname"/>
-          <br/>
-          Last name: <input type="text" name="lname"/>
-          <br/>
-          Title: <input type="text" name="title"/>
-          <br>
-          Date Joined: <input type="text" name="date_joined"/>
-          <br>
-          Type:
-          <select name="type">
-            <option value="tenured">Tenured Professor</option>
-            <option value="untenured">Untenured Professor</option>
-            <option value="fti">FTI</option>
-            <option value="gpti">GPTI</option>
-          </select>
-          <br>
-          <button type="submit" name="action" value="add_prof">submit</button>
-        </form>
-      </div>
+/* 
+ * add instructor form 
+ */
+$types = array(
+  "tenured" => "Tenured Professor",
+  "untenured" => "Untenured Professor",
+  "fti" => "FTI",
+  "gpti" => "GPTI",
+);
+gen_h3('section-title', 'Add Instructor:');
+push_div('section');
+push_form('index.php');
+gen_textinput('fname', 'First Name:'); 
+gen_textinput('lname', 'Last Name:'); 
+gen_textinput('title', 'Title:'); 
+gen_textinput('date_joined', 'Date Joined:'); 
+gen_dropdown('type', $types);
+gen_hidden('action', 'add_prof'); 
+gen_submit();
+pop_dom();
+pop_dom();
 
-      <!-- add text book -->
-      <h3 class="section-title">Add Text Book:</h3>
-      <div class="section">
-        <form method="post" action="/dbproj/index.php">
-          Title: <input type="text" name="title"/>
-          <br/>
-          Publisher: <input type="text" name="publisher"/>
-          <br/>
-          Edition: <input type="text" name="edition"/>
-          <br/>
-          ISBN: <input type="text" name="isbn"/>
-          <br/>
-          <button type="submit" name="action" value="add_book">submit</button>
-        </form>
-      </div>
-	  
-	  <!-- add course -->
-      <h3 class="section-title">Add Course:</h3>
-      <div class="section">
-        <form method="post" action="/dbproj/index.php">
-          Course Number: <input type="text" name="c_number"/>
-          <br/>
-          title: <input type="text" name="title"/>
-          <br/>
-          Description: <input type="text" name="desc">
-		  <br/>
-		  <button type="submit" name="action" value="add_course">submit</button>
-        </form>
-      </div>
+/* 
+ * add text book form 
+ * */
+gen_h3('section-title', 'Add Text Book:');
+push_div('section');
+push_form('index.php');
+gen_textinput('title', 'Title:'); 
+gen_textinput('publisher', 'Publisher:'); 
+gen_textinput('edition', 'Edition:'); 
+gen_textinput('isbn', 'ISBN:'); 
+gen_hidden('action', 'add_book'); 
+gen_submit();
+pop_dom();
+pop_dom();
 
-      <!-- list profs -->
-      <h3 class="section-title">List Professors:</h3>
-      <div class="section">
-        <ul>
-          <?php
-            $profs = get_all_profs();
-            while ($row = mysql_fetch_assoc($profs)) {
-              echo "<li>{$row['first_name']} {$row['last_name']}</li>";
-            }
-          ?>
-        </ul>
-      </div>
+/* 
+ * add course form 
+ * */
+gen_h3('section-title', 'Add Course:');
+push_div('section');
+push_form('index.php');
+gen_textinput('c_number', 'Course Number:'); 
+gen_textinput('title', 'Title:'); 
+gen_textinput('desc', 'Description:'); 
+gen_hidden('action', 'add_course'); 
+gen_submit();
+pop_dom();
+pop_dom();
 
-      <!-- list books -->
-      <h3 class="section-title">List Text Books:</h3>
-      <div class="section">
-        <ul>
-          <?php
-            $books = get_all_books();
-            while ($row = mysql_fetch_assoc($books)) {
-              echo "<li>{$row['title']} : {$row['isbn']}</li>";
-            }
-          ?>
-        </ul>
-      </div>
-	  
-	  <!-- list courses -->
-      <h3 class="section-title">List Course:</h3>
-      <div class="section">
-        <ul>
-          <?php
-            $course = get_all_courses();
-            while ($row = mysql_fetch_assoc($course)) {
-              echo "<li>{$row['course_num']} {$row['title']} {$row['description']}</li>";
-            }
-          ?>
-        </ul>
-      </div>
+/*
+ * list professors
+ */
+$profs = get_all_profs();
+$names = array();
+while ($row = mysql_fetch_assoc($profs)) {
+  $names[] = $row['first_name'];
+}
+gen_h3('section-title', 'List Professors');
+push_div('section');
+gen_ul($names);
+pop_dom();
 
-    </div>
-  </body>
-</html>
+/*
+ * list books
+ */
+$books = get_all_books();
+$names = array();
+while ($row = mysql_fetch_assoc($books)) {
+  $names[] = $row['title'];
+}
+gen_h3('section-title', 'List Text Books:');
+push_div('section');
+gen_ul($names);
+pop_dom();
+
+/*
+ * list courses
+ */
+$courses = get_all_courses();
+$names = array();
+while ($row = mysql_fetch_assoc($courses)) {
+  $names[] = $row['title'];
+}
+gen_h3('section-title', 'List Courses:');
+push_div('section');
+gen_ul($names);
+
+
+/* dump HTML */
+gen_dump()
