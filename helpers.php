@@ -6,7 +6,7 @@ $current = null;
 /*
  * starts a DOM node
  */
-function gen_dom() {
+function dom_init() {
   global $dom, $current;
   $dom = new DOMDocument();
   $current = array();
@@ -17,28 +17,45 @@ function gen_dom() {
  * writes xml to the browser
  * and destroys the current DOM
  */
-function gen_dump() {
+function dom_dump() {
   global $dom, $current;
   echo $dom->saveXML();
   $dom = null;
   $current = null;
 }
 
-function pop_dom() {
+/*
+ * pops off last element
+ */
+function dom_pop() {
   global $current;
   array_pop($current);
 }
 
+/*
+ * sets $elem as current
+ * working node by pushing it
+ * onto the working dom stack
+ */
 function dom_push($elem) {
   global $current;
-  curr_dom()->appendChild($elem);
+  dom_append($elem);
   $current[] = $elem;
 }
 
-function curr_dom() {
+/*
+ * appends element to current working
+ * element (top of working stack)
+ */
+function dom_append($elem) {
   global $current;
-  return end($current);
+  return end($current)->appendChild($elem);
 }
+
+/*
+ * everything below defines element
+ * creation.
+ * /
 
 /*
  * generates a dropdown of name $name
@@ -57,35 +74,35 @@ function gen_dropdown($name, $elements) {
     $select->appendChild($option);
   }
 
-  curr_dom()->appendChild($select);
-  curr_dom()->appendChild($dom->createElement('br'));
+  dom_append($select);
+  dom_append($dom->createElement('br'));
 }
 
 function gen_textinput($name, $text) {
   global $dom;
   $label = $dom->createElement('label', $text);
-  curr_dom()->appendChild($label);
+  dom_append($label);
 
   $input = $dom->createElement('input');
   $input->setAttribute('name', $name);
   $input->setAttribute('type', 'text');
-  curr_dom()->appendChild($input);
+  dom_append($input);
 
-  curr_dom()->appendChild($dom->createElement('br'));
+  dom_append($dom->createElement('br'));
 }
 
 function gen_submit() {
   global $dom;
   $button = $dom->createElement('button', 'Submit');
   $button->setAttribute('type', 'submit');
-  curr_dom()->appendChild($button);
+  dom_append($button);
 }
 
 function gen_h3($class, $text) {
   global $dom;
   $h3 = $dom->createElement('h3', $text);
   $h3->setAttribute('class', $class);
-  curr_dom()->appendChild($h3);
+  dom_append($h3);
 }
 
 function gen_hidden($name, $value) {
@@ -94,7 +111,7 @@ function gen_hidden($name, $value) {
   $input->setAttribute('type', 'hidden');
   $input->setAttribute('name', $name);
   $input->setAttribute('value', $value);
-  curr_dom()->appendChild($input);
+  dom_append($input);
 }
 
 function push_div($class) {
@@ -121,20 +138,20 @@ function gen_ul($data) {
     $ul->appendChild($li);
   }
 
-  curr_dom()->appendChild($ul);
+  dom_append($ul);
 }
 
 function gen_link($href, $text) {
   global $dom;
   $a = $dom->createElement('a', $text);
   $a->setAttribute('href', $href);
-  curr_dom()->appendChild($a);
+  dom_append($a);
 }
 
 /*
  * generates the main HTML tag and body
  */
-function gen_body() {
+function push_body() {
   global $dom;
 
   $html = $dom->createElement('html');
@@ -147,15 +164,15 @@ function gen_body() {
     $link->setAttribute('rel', 'stylesheet');
     $link->setAttribute('type', 'text/css');
     $link->setAttribute('href', 'style.css');
-  curr_dom()->appendChild($link);
+  dom_append($link);
 
-  pop_dom();
+  dom_pop();
 
   $body = $dom->createElement('body');
   dom_push($body);
   push_div('header boarder');
   gen_h3('', 'Course Management Sys');
   gen_link('#', 'link1');
-  pop_dom();
+  dom_pop();
   push_div('content');
 }

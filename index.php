@@ -68,8 +68,8 @@ if (isset($_POST['action'])) {
 /* 
  * begin HTML rendering... 
  */
-gen_dom();
-gen_body();
+dom_init();
+push_body();
 
 /*
  * this displays the last error that mySQL encountered, if any,
@@ -84,13 +84,13 @@ $message = get_message();
 if ($mysql_error) {
   push_div('error');
   gen_h3('', $mysql_error);
-  pop_dom();
+  dom_pop();
 } 
 
 else if ($message) {
   push_div('message');
   gen_h3('', $message);
-  pop_dom();
+  dom_pop();
 }
 
 /*
@@ -118,8 +118,8 @@ gen_textinput('date_joined', 'Date Joined:');
 gen_dropdown('type', $types);
 gen_hidden('action', 'add_prof'); 
 gen_submit();
-pop_dom();
-pop_dom();
+dom_pop();
+dom_pop();
 
 /* 
  * add text book form 
@@ -133,8 +133,8 @@ gen_textinput('edition', 'Edition:');
 gen_textinput('isbn', 'ISBN:'); 
 gen_hidden('action', 'add_book'); 
 gen_submit();
-pop_dom();
-pop_dom();
+dom_pop();
+dom_pop();
 
 /* 
  * add course form 
@@ -147,8 +147,8 @@ gen_textinput('title', 'Title:');
 gen_textinput('desc', 'Description:'); 
 gen_hidden('action', 'add_course'); 
 gen_submit();
-pop_dom();
-pop_dom();
+dom_pop();
+dom_pop();
 
 /*
  * list professors
@@ -161,7 +161,7 @@ while ($row = mysql_fetch_assoc($profs)) {
 gen_h3('section-title', 'List Professors');
 push_div('section');
 gen_ul($names);
-pop_dom();
+dom_pop();
 
 /*
  * list books
@@ -174,7 +174,7 @@ while ($row = mysql_fetch_assoc($books)) {
 gen_h3('section-title', 'List Text Books:');
 push_div('section');
 gen_ul($names);
-pop_dom();
+dom_pop();
 
 /*
  * list courses
@@ -190,4 +190,4 @@ gen_ul($names);
 
 
 /* dump HTML */
-gen_dump()
+dom_dump();
