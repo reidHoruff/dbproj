@@ -23,7 +23,7 @@ function get_error() {
 }
 
 /*
- * this block handels all POST requests
+ * this block handles all POST requests
  */
 if (isset($_POST['action'])) {
 
@@ -48,8 +48,16 @@ if (isset($_POST['action'])) {
    */
   else if ($_POST['action'] == 'add_course') {
     create_course($_POST['c_number'], $_POST['title'], $_POST['desc']); 
-    set_message("course successfully added.");
+    set_message("Course successfully added.");
   }  
+  
+  /*
+   * action for adding a section
+   */
+  else if ($_POST['action'] == 'add_section') {
+    create_section($_POST['c_number'], $_POST['section'], $_POST['capacity'], $_POST['days'],  $_POST['enrollment'], $_POST['room'], $_POST['time'], $_POST['crn']); 
+    set_message("Section successfully added.");
+  } 
   
   else {
   }
@@ -151,6 +159,32 @@ dom_pop();
 dom_pop();
 
 /*
+ * add section form
+ * */
+ $types = array(
+  "mwf" => "M/W/F",
+  "tth" => "T/Th",
+);
+gen_h3('section-title', 'Add Section:');
+push_div('section');
+push_form('index.php');
+gen_textinput('section', 'Section Number:');
+gen_textinput('c_number', 'Course Number:'); 
+gen_textinput('capacity', 'Capacity:');  
+gen_dropdown('type', $types);  //I would like if this showed 'Days:' b4 it
+gen_textinput('enrollment', 'Enrollment:'); 
+gen_textinput('room', 'Room:'); 
+gen_textinput('time', 'Time:'); 
+gen_textinput('crn', 'Course Reference Number');
+gen_hidden('action', 'add_section'); 
+gen_submit();
+dom_pop();
+dom_pop();
+
+
+
+
+/*
  * list professors
  */
 $profs = get_all_profs();
@@ -187,6 +221,20 @@ while ($row = mysql_fetch_assoc($courses)) {
 gen_h3('section-title', 'List Courses:');
 push_div('section');
 gen_ul($names);
+dom_pop();
+
+/*
+ * list sections
+ */
+$sections = get_all_sections();
+$names = array();
+while ($row = mysql_fetch_assoc($sections)) {
+  $names[] = $row['crn'];
+}
+gen_h3('section-title', 'List Sections:');
+push_div('section');
+gen_ul($names);
+
 
 
 /* dump HTML */

@@ -19,6 +19,7 @@ if (!$conn) {
 mysql_select_db($dbname);
 
 
+
 //Creation Functions
 function create_professor($fname, $lname, $title, $type, $date_joined) {
   mysql_query("insert into profs (first_name, last_name, title, type, date_joined) values ('$fname', '$lname', '$title', '$type', '$date_joined');");
