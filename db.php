@@ -50,7 +50,7 @@ function link_ta_section($ta_id, $section_id, $hours){
 
 //Getting Functions
 function get_all_profs() {
-  return mysql_query("select * from instructors;");
+  return mysql_query("select * from instructors inner join eraiders on instructors.username=eraiders.username;");// or die(mysq_ery());
 }
 
 function get_all_books() {
@@ -67,6 +67,18 @@ function get_all_sections(){
 
 function get_all_tas(){
   return mysql_query("select * from tas;");
+}
+
+function get_all_eraiders(){
+  return mysql_query("select * from eraiders;");
+}
+
+/**
+ * login functions
+ */
+
+function instructor_login($username, $password) {
+  return mysql_result(mysql_query("select count(*) from instructors inner join eraiders on instructors.username=eraiders.username where eraiders.username='$username' and eraiders.password='$password'"), 0);
 }
 
 /**
@@ -87,11 +99,15 @@ function get_all_tas(){
  *
  * insert into people (name, age) values ("joe", "35");
  */
-function mysql_insert_dang($table, $values) {
+function mysql_insert_dang($table, $values, $exclude = array()) {
   unset($values['action']);
   echo $values;
   foreach ($values as $key => $value) {
-    $values[$key] = '"' . mysql_real_escape_string($value) . '"';
+    if (in_array($key, $exclude)) {
+      unset($values[$key]);
+    } else {
+      $values[$key] = '"' . mysql_real_escape_string($value) . '"';
+    }
   }
   $sql = "insert into $table"
     . '(' . implode(',', array_keys($values)) . ')'

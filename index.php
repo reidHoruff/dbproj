@@ -5,8 +5,17 @@ require_once 'db.php';
 require_once 'helpers.php';
 require_once 'dom.php';
 require_once 'forms.php';
+require_once 'val.php';
 
 class index_page extends base_page {
+
+  function header_title() {
+    return 'TTU Administrator Panel';
+  }
+
+  function page_name() {
+    return 'index.php';
+  }
 
   /*
    * this block handles all POST requests
@@ -14,10 +23,18 @@ class index_page extends base_page {
   function pre_render() {
     if (isset($_POST['action'])) {
       /* 
-       * action for adding a professor 
+       * action for adding a instructor
        */
-      if ($_POST['action'] == 'add_prof') {
-        mysql_insert_dang('instructors', $_POST);
+      if ($_POST['action'] == 'add_instructor') {
+        mysql_insert_dang('instructors', $_POST, array('password2'));
+        $this->set_message("Eraider successfully added.");
+      } 
+
+      /* 
+       * action for adding eraider
+       */
+      if ($_POST['action'] == 'add_eraider') {
+        mysql_insert_dang('eraider', $_POST, array('password2'));
         $this->set_message("Teacher successfully added.");
       } 
       
@@ -85,6 +102,7 @@ class index_page extends base_page {
   }
 
   function render_body() {
+    add_eraider_form();
     add_instructor_form();
     add_course_form();
     add_section_form();

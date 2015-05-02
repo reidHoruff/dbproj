@@ -4,11 +4,11 @@ require_once 'dom.php';
 /*
  * list professors
  */
-function list_professors() {
+function list_instructors() {
   $profs = get_all_profs();
   $names = array();
   while ($row = mysql_fetch_assoc($profs)) {
-    $names[] = $row['first_name'];
+    $names[] = $row['username'] . ' - ' . $row['first_name'] . ' ' . $row['last_name'];
   }
   dom::h3('section-title', 'List Professors');
   dom::push_div('section');
@@ -23,7 +23,7 @@ function list_books() {
   $books = get_all_books();
   $names = array();
   while ($row = mysql_fetch_assoc($books)) {
-    $names[] = $row['title'];
+    $names[] = $row['title'] . ' - ' . $row['isbn'] . ' - ' . $row['publisher'];
   }
   dom::h3('section-title', 'List Text Books:');
   dom::push_div('section');
@@ -100,7 +100,7 @@ function all_teachers_data() {
   $teachers = array();
   $all_teachers = get_all_profs();
   while ($row = mysql_fetch_assoc($all_teachers)) {
-    $teachers[$row['id']] = $row['first_name'] . " " . $row['last_name'];
+    $teachers[$row['id']] = $row['username'] . ' - ' . $row['first_name'] . " " . $row['last_name'];
   }
   return $teachers;
 }
@@ -130,6 +130,27 @@ function all_ta_data() {
     $tas[$row['id']] = $row['first_name'] . ' ' . $row['last_name'];
   }
   return $tas;
+}
+
+function all_eraiders_data() {
+  $data = array();
+  $all = get_all_eraiders();
+  while ($row = mysql_fetch_assoc($all)) {
+    $data[$row['username']] = $row['username'] . ' - ' . $row['first_name'] . ' ' . $row['last_name'];
+  }
+  return $data;
+}
+
+/*
+ *
+ * php sucks...
+ */
+function bool($b) {
+  if ($b) {
+    return 'true';
+  } else {
+    return 'false';
+  }
 }
 
 

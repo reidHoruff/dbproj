@@ -1,6 +1,7 @@
 <?php
 
 require_once 'dom.php';
+require_once 'helpers.php';
 
 class base_page {
 
@@ -8,32 +9,72 @@ class base_page {
     session_start();
   }
 
+  function page_name() {
+    return 'base';
+  }
+
   function set_message($m) {
     global $_SESSION;
-    $_SESSION['message'] = $m;
+    $_SESSION['message' . $this->page_name()] = $m;
+  }
+
+  function require_login() {
+    return false;
+  }
+
+  function header_title() {
+    return 'Course Management System';
   }
 
   function get_message() {
-    return $_SESSION['message'];
+    return $_SESSION['message' . $this->page_name()];
   }
 
   function set_error($e) {
     global $_SESSION;
-    $_SESSION['error'] = $e;
+    $_SESSION['error' . $this->page_name()] = $e;
+  }
+
+  function logout() {
+    $this->set_inst_is_loggedin(false);
+  }
+
+  function set_inst_is_loggedin($logged_in) {
+    if ($logged_in != true) {
+      $this->set_username(null);
+    }
+    $_SESSION['loggedin-inst'] = $logged_in;
+  }
+
+  function is_inst_logged_in() {
+    return isset($_SESSION['loggedin-inst']) and $_SESSION['loggedin-inst'] == true;
+  }
+
+  function set_username($un) {
+    $_SESSION['username'] = $un;
+  }
+
+  function get_username() {
+    return $_SESSION['username'];
   }
 
   function get_error() {
-    return $_SESSION['error'];
+    return $_SESSION['error' . $this->page_name()];
   }
 
   function pre_render() {
+    /** to be overwritten */
+  }
+
+  function render_body() {
+    /* to be over written */
   }
 
   function render_head() {
     /* 
      * begin HTML rendering... 
      */
-    dom::init();
+    dom::init($this);
     dom::push_body();
 
     /*
@@ -57,12 +98,25 @@ class base_page {
         dom::h3('', $message);
       dom::pop();
     }
-  }
 
-  function render_body() {
+    /*
+     * clear message and error
+     */
+    $this->set_error(null);
+    $this->set_message(null);
   }
 
   function dump() {
+    /**
+     * deny requests to page if login is required and
+     * user is not logged int
+     */
+    if (
+      $this->require_login() == true 
+      and $this->is_inst_logged_in() == false) {
+      die("permission denied " . bool($this->is_inst_logged_in()) . " " . bool($this->require_login()));
+    }
+
     $this->init();
     $this->pre_render();
     $this->render_head();

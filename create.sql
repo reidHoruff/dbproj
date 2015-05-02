@@ -2,13 +2,25 @@ drop database if exists dbproj;
 create database dbproj;
 use dbproj;
 
-create table instructors (
-  id int not null AUTO_INCREMENT,
+/*
+passwords shouldn't be stored in plaintext...
+*/
+
+create table eraiders (
+  username char(255) not null,
   first_name char(255) not null,
   last_name char(255) not null,
+  password char(255) not null,
+  primary key (username)
+);
+
+create table instructors (
+  id int not null AUTO_INCREMENT,
+  username char(255) not null,
   title char(255) not null,
   type char (255) not null, /* [tenured, untenured, fti, gpti] */
   date_joined char(255) not null,
+  foreign key (username) references eraiders(username),
   primary key (id)
 );
 
@@ -82,32 +94,36 @@ create table section_to_lab_section (
   foreign key (lab_section_id) references sections(id)
 );
 
+/**
+data eraiders
+*/
+
+insert into eraiders (first_name, last_name, username, password)
+values ('Nelson', 'Rushton', 'n.rushton', 'foo');
+
+insert into eraiders (first_name, last_name, username, password)
+values ('Richard', 'Watson', 'r.watson', 'foor');
+
+insert into eraiders (first_name, last_name, username, password)
+values ('Y', 'Zhang', 'y.zhang', 'foo');
+
+insert into eraiders (first_name, last_name, username, password)
+values ('reid', 'horuff', 'thoruff', 'foo');
+
 
 /**
 data instructors
 */
 
+insert into instructors (username, title, type, date_joined)
+values ('n.rushton', 'CS Professor', 'tenured', '2000');
 
-insert into instructors (first_name, last_name, title, type, date_joined)
-values ('Nelson', 'Rushton', 'CS Professor', 'tenured', '2000');
+insert into instructors (username, title, type, date_joined)
+values ('r.watson', 'CS Professor', 'tenured', '2000');
 
-insert into instructors (first_name, last_name, title, type, date_joined)
-values ('Richard', 'Watson', 'CS Professor', 'tenured', '2000');
+insert into instructors (username, title, type, date_joined)
+values ('y.zhang', 'CS Professor', 'tenured', '2000');
 
-insert into instructors (first_name, last_name, title, type, date_joined)
-values ('Gregory', 'Gelfond', 'CS junior instructor', 'fti', '2010');
-
-insert into instructors (first_name, last_name, title, type, date_joined)
-values ('Namin', 'Akbar', 'CS professor', 'tenured', '2005');
-
-insert into instructors (first_name, last_name, title, type, date_joined)
-values ('Susan', 'Mengel', 'CS professor', 'tenured', '2000');
-
-insert into instructors (first_name, last_name, title, type, date_joined)
-values ('Y', 'Zhang', 'CS professor', 'tenured', '2005');
-
-insert into instructors (first_name, last_name, title, type, date_joined)
-values ('Noel', 'Lopez-Binetez', 'CS professor', 'tenured', '2000');
 
 /**
 data courses

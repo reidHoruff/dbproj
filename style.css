@@ -20,6 +20,19 @@ input[type="text"] {
   width: 200px;
 }
 
+a {
+  margin-right: 8px;
+}
+
+input[type="password"] {
+  font-size: 14px;
+  margin: 2px;
+  margin-left: 0px;
+  padding: 2px;
+  width: 200px;
+}
+
+
 label {
   display: inline-block;
   min-width: 130px;

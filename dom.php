@@ -3,15 +3,17 @@
 class dom {
   static $dom = null;
   static $current = null;
+  static $page = null;
 
   /*
    * starts a DOM node
    */
-  static function init() {
-    global $dom, $current;
+  static function init($p) {
+    global $dom, $current, $page;
     $dom = new DOMDocument();
     $current = array();
     $current[] = $dom;
+    $page = $p;
   }
 
   /*
@@ -101,6 +103,17 @@ class dom {
     self::append($dom->createElement('br'));
   }
 
+  static function password($name, $text) {
+    global $dom;
+    self::label($text);
+    $input = $dom->createElement('input');
+    $input->setAttribute('name', $name);
+    $input->setAttribute('type', 'password');
+    self::append($input);
+
+    self::append($dom->createElement('br'));
+  }
+
   static function submit() {
     global $dom;
     $button = $dom->createElement('button', 'Submit');
@@ -162,7 +175,7 @@ class dom {
    * generates the main HTML tag and body
    */
   static function push_body() {
-    global $dom;
+    global $dom, $page;
 
     $html = $dom->createElement('html');
     self::push($html);
@@ -181,8 +194,21 @@ class dom {
     $body = $dom->createElement('body');
     self::push($body);
     self::push_div('header boarder');
-    self::h3('', 'Course Management Sys');
-    self::link('#', 'link1');
+    self::h3('', $page->header_title());
+    self::link('index.php', 'Admin Panel');
+
+    if ($page->is_inst_logged_in()) 
+    {
+      self::link('prefs.php', 'Professor Preferences');
+      self::link('logout.php', 'logout');
+    } 
+
+    else 
+    {
+      self::link('login.php', 'Professor Login');
+    }
+
+    self::link('lists.php', 'Lists [debugging]');
     self::pop();
     self::push_div('content');
   }

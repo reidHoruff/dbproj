@@ -1,5 +1,23 @@
 <?php
 require_once 'dom.php';
+/**
+ * add eraider
+ */
+function add_eraider_form() {
+  dom::h3('section-title', 'Add Eraider:');
+  dom::push_div('section');
+    dom::push_form('index.php');
+      dom::textinput('first_name', 'First Name:'); 
+      dom::textinput('last_name', 'Last Name:'); 
+      dom::textinput('username', 'Username:'); 
+      dom::password('password', 'Temp Password:'); 
+      dom::password('password2', 'Confirm Pass:'); 
+      dom::hidden('action', 'add_eraider'); 
+      dom::submit();
+    dom::pop();
+  dom::pop();
+}
+
 /* 
  * add instructor form 
  */
@@ -13,13 +31,13 @@ function add_instructor_form() {
   dom::h3('section-title', 'Add Instructor:');
   dom::push_div('section');
     dom::push_form('index.php');
-      dom::textinput('first_name', 'First Name:'); 
-      dom::textinput('last_name', 'Last Name:'); 
+      dom::label('Username:');
+      dom::dropdown('username', all_eraiders_data());
       dom::textinput('title', 'Title:'); 
       dom::textinput('date_joined', 'Date Joined:'); 
       dom::label('Type:');
       dom::dropdown('type', $types);
-      dom::hidden('action', 'add_prof'); 
+      dom::hidden('action', 'add_instructor'); 
       dom::submit();
     dom::pop();
   dom::pop();
@@ -161,6 +179,22 @@ function add_ta_to_section() {
       dom::dropdown('hours', list_ta_hours());
 
       dom::hidden('action', 'link_ta_to_section'); 
+      dom::submit();
+    dom::pop();
+  dom::pop();
+}
+
+/* 
+ * login page
+ * */
+function login_form() {
+
+  dom::h3('section-title', 'login:');
+  dom::push_div('section');
+    dom::push_form('login.php');
+      dom::textinput('username', "Username:");
+      dom::password('password', "Password:");
+      dom::hidden('action', 'instructor_login'); 
       dom::submit();
     dom::pop();
   dom::pop();
