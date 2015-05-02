@@ -60,3 +60,18 @@ function list_sections() {
     dom::ul($names);
   dom::pop();
 }
+
+/**
+ * list semesters
+ */
+
+function list_semesters() {
+  $semesters = array();
+  for ($i = 2015; $i < 2017; $i++) {
+    $semesters[] = 'Spring ' . $i;
+    $semesters[] = 'Summer I ' . $i;
+    $semesters[] = 'Summer II ' . $i;
+    $semesters[] = 'Fall ' . $i;
+  }
+  return $semesters;
+}

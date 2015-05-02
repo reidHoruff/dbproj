@@ -21,25 +21,28 @@ mysql_select_db($dbname);
 
 //Creation Functions
 function create_professor($fname, $lname, $title, $type, $date_joined) {
-  mysql_query("insert into profs (first_name, last_name, title, type, date_joined) values ('$fname', '$lname', '$title', '$type', '$date_joined');");
+  mysql_query("insert into instructors (first_name, last_name, title, type, date_joined) values ('$fname', '$lname', '$title', '$type', '$date_joined');");
 }
 
 function create_book($title, $publisher, $edition, $isbn) {
   mysql_query("insert into books (title, publisher, edition, isbn) values ('$title', '$publisher', '$edition', '$isbn');");
 }
 
-function create_course($c_number, $title, $desc, $required){
-  mysql_query("insert into courses (course_num, title, description, required) values ('$c_number', '$title', '$desc', '$required')");
+function create_course($code, $title, $desc, $required){
+  mysql_query("insert into courses (code, title, description, required) values ('$code', '$title', '$desc', '$required')");
 }
 
-function create_section($c_number, $section, $capacity, $days, $enrollment, $room, $time, $crn){
-  mysql_query("insert into sections (course_num, section, capacity, days, enrollment, room, time, crn) values ('$c_number', '$section', '$capacity', '$days', '$enrollment', '$room', '$time', '$crn');");
+function create_section($course_id, $section, $capacity, $days, $enrollment, $room, $time, $crn){
+  mysql_query("insert into sections (course_id, section, capacity, days, enrollment, room, time, crn) values ('$c_number', '$section', '$capacity', '$days', '$enrollment', '$room', '$time', '$crn');");
 }
 
+function link_instructor_section($inst_id, $course_id){
+  mysql_query("insert into instructor_to_section (instructor_id, section_id) values ('$inst_id', '$course_id')");
+}
 
 //Getting Functions
 function get_all_profs() {
-  return mysql_query("select * from profs;");
+  return mysql_query("select * from instructors;");
 }
 
 function get_all_books() {

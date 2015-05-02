@@ -61,7 +61,7 @@ if (isset($_POST['action'])) {
    */
   else if ($_POST['action'] == 'add_course') {
     create_course(
-      $_POST['c_number'], 
+      $_POST['code'], 
       $_POST['title'], 
       $_POST['desc']
     ); 
@@ -73,7 +73,7 @@ if (isset($_POST['action'])) {
    */
   else if ($_POST['action'] == 'add_section') {
     create_section(
-      $_POST['c_number'], 
+      $_POST['course_id'], 
       $_POST['section'], 
       $_POST['capacity'], 
       $_POST['days'],  
@@ -83,6 +83,17 @@ if (isset($_POST['action'])) {
       $_POST['crn']
     ); 
     set_message("Section successfully added.");
+  } 
+
+  /*
+   * link section and instructor
+   */
+  else if ($_POST['action'] == 'link_inst_sect') {
+    link_instructor_section(
+      $_POST['inst_id'], 
+      $_POST['course_id']
+    ); 
+    set_message("Section and instructor successfully linked.");
   } 
   
   else {
@@ -138,5 +149,6 @@ add_course_form();
 add_section_form();
 add_text_book_form();
 
+add_teacher_to_section();
 /* dump HTML */
 dom::dump();

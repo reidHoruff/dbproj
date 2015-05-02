@@ -49,9 +49,11 @@ function add_course_form() {
   dom::h3('section-title', 'Add Course:');
   dom::push_div('section');
     dom::push_form('index.php');
-      dom::textinput('c_number', 'Course Number:'); 
+      dom::textinput('code', 'Course Number:'); 
       dom::label('Type:');
       dom::dropdown('required', array('y' => "Required", "n" => "Elective"));
+      dom::label('Lab:');
+      dom::dropdown('lab', array('n' => "no", "y" => "yes"));
       dom::textinput('title', 'Title:'); 
       dom::textinput('desc', 'Description:'); 
       dom::hidden('action', 'add_course'); 
@@ -69,16 +71,10 @@ function add_section_form() {
     "tth" => "T/Th",
   );
 
-  $teachers = array();
-  $all_teachers = get_all_profs();
-  while ($row = mysql_fetch_assoc($all_teachers)) {
-    $teachers[$row['id']] = $row['first_name'] . " " . $row['last_name'];
-  }
-
   $courses = array();
   $all_courses = get_all_courses();
   while ($row = mysql_fetch_assoc($all_courses)) {
-    $courses[$row['course_num']] = $row['title'];
+    $courses[$row['id']] = $row['code'] . ' - ' . $row['title'];
   }
 
   dom::h3('section-title', 'Add Section:');
@@ -89,20 +85,54 @@ function add_section_form() {
       dom::textinput('enrollment', 'Enrollment:'); 
       dom::textinput('room', 'Room:'); 
       dom::textinput('time', 'Time:'); 
+      dom::textinput('ta_name', 'Name of TA:'); 
+      dom::textinput('ta_hours', 'TA weekly hours:'); 
+
+      dom::label('Course:');
+      dom::dropdown('course_id', $courses);
 
       dom::label('Days:');
       dom::dropdown('type', $days);
 
-      dom::label('Instructor:');
-      dom::dropdown('teacher', $teachers);
+      dom::label('Semester:');
+      dom::dropdown('semester', list_semesters());
 
-      dom::label('Course:');
-      dom::dropdown('crn', $courses);
 
-      dom::label('Lecture:');
+      dom::label('Lecture Style:');
       dom::dropdown('f2f', array('ftf' => 'Face to face', 'dis' => 'Distance lecture'));
 
       dom::hidden('action', 'add_section'); 
+      dom::submit();
+    dom::pop();
+  dom::pop();
+}
+
+/* 
+ * link sections and instructor
+ * */
+function add_teacher_to_section() {
+  $teachers = array();
+  $all_teachers = get_all_profs();
+  while ($row = mysql_fetch_assoc($all_teachers)) {
+    $teachers[$row['id']] = $row['first_name'] . " " . $row['last_name'];
+  }
+
+  $sections = array();
+  $all_sections = get_all_sections();
+  while ($row = mysql_fetch_assoc($all_sections)) {
+    $sections[$row['id']] = $row['crn'];
+  }
+  dom::h3('section-title', 'Link Instructor and Section:');
+  dom::push_div('section');
+    dom::push_form('index.php');
+
+      dom::label('Instructor:');
+      dom::dropdown('inst_id', $teachers);
+
+      dom::label('section:');
+      dom::dropdown('course_id', $sections);
+
+      dom::hidden('action', 'link_inst_sect'); 
       dom::submit();
     dom::pop();
   dom::pop();
