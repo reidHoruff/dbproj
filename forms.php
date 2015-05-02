@@ -118,7 +118,7 @@ function add_section_form() {
 }
 
 /* 
- * link sections and instructor
+ * link instructor to section
  * */
 function add_teacher_to_section() {
   $teachers = all_teachers_data();
@@ -129,10 +129,10 @@ function add_teacher_to_section() {
     dom::push_form('index.php');
 
       dom::label('Instructor:');
-      dom::dropdown('inst_id', $teachers);
+      dom::dropdown('instructor_id', $teachers);
 
       dom::label('section:');
-      dom::dropdown('course_id', $sections);
+      dom::dropdown('section_id', $sections);
 
       dom::hidden('action', 'link_inst_sect'); 
       dom::submit();
@@ -158,9 +158,9 @@ function add_ta_to_section() {
       dom::dropdown('section_id', $sections);
 
       dom::label('Weekly Hours');
-      dom::dropdown('ta_hours', list_ta_hours());
+      dom::dropdown('hours', list_ta_hours());
 
-      dom::hidden('action', 'link_inst_sect'); 
+      dom::hidden('action', 'link_ta_to_section'); 
       dom::submit();
     dom::pop();
   dom::pop();

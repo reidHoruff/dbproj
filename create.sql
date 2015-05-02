@@ -141,6 +141,11 @@ insert into books (isbn, title, publisher, edition) values
 insert into books (isbn, title, publisher, edition) values
 ('734730745', 'On Calculus Principles', 'McGraw', '100');
 
+
+/**
+data tas
+*/
+
 insert into tas (first_name, last_name) values
 ('Garrison', 'Ritchie');
 

@@ -69,6 +69,12 @@ class dom {
     $select = $dom->createElement('select');
     $select->setAttribute('name', $name);
 
+    if (empty($elements)) {
+      $option = $dom->createElement('option', "");
+      $option->setAttribute('value', "");
+      $select->appendChild($option);
+    }
+
     foreach ($elements as $key => $value) {
       $option = $dom->createElement('option', $value);
       $option->setAttribute('value', $key);
