@@ -33,13 +33,7 @@ if (isset($_POST['action'])) {
    * action for adding a professor 
    */
   if ($_POST['action'] == 'add_prof') {
-    create_professor(
-      $_POST['fname'], 
-      $_POST['lname'], 
-      $_POST['title'], 
-      $_POST['type'], 
-      $_POST['date_joined']
-    ); 
+    mysql_insert_dang('instructors', $_POST);
     set_message("Teacher successfully added.");
   } 
   
@@ -47,12 +41,7 @@ if (isset($_POST['action'])) {
    * action for adding a book
    */
   else if ($_POST['action'] == 'add_book') {
-    create_book(
-      $_POST['title'], 
-      $_POST['publisher'], 
-      $_POST['edition'], 
-      $_POST['isbn']
-    ); 
+    mysql_insert_dang('books', $_POST);
     set_message("Text book successfully added.");
   }
 
@@ -60,28 +49,24 @@ if (isset($_POST['action'])) {
    * action for adding a course
    */
   else if ($_POST['action'] == 'add_course') {
-    create_course(
-      $_POST['code'], 
-      $_POST['title'], 
-      $_POST['desc']
-    ); 
+    mysql_insert_dang('courses', $_POST);
     set_message("Course successfully added.");
   }  
+
+  /*
+   * action for adding a ta
+   */
+  else if ($_POST['action'] == 'add_ta') {
+    mysql_insert_dang('tas', $_POST);
+    set_message("Course successfully added.");
+  }  
+  
   
   /*
    * action for adding a section
    */
   else if ($_POST['action'] == 'add_section') {
-    create_section(
-      $_POST['course_id'], 
-      $_POST['section'], 
-      $_POST['capacity'], 
-      $_POST['days'],  
-      $_POST['enrollment'], 
-      $_POST['room'], 
-      $_POST['time'], 
-      $_POST['crn']
-    ); 
+    mysql_insert_dang('sections', $_POST);
     set_message("Section successfully added.");
   } 
 
@@ -89,10 +74,7 @@ if (isset($_POST['action'])) {
    * link section and instructor
    */
   else if ($_POST['action'] == 'link_inst_sect') {
-    link_instructor_section(
-      $_POST['inst_id'], 
-      $_POST['course_id']
-    ); 
+    mysql_insert_dang('instructor_to_section', $_POST);
     set_message("Section and instructor successfully linked.");
   } 
   
@@ -148,7 +130,9 @@ add_instructor_form();
 add_course_form();
 add_section_form();
 add_text_book_form();
+add_ta_form();
 
 add_teacher_to_section();
+add_ta_to_section();
 /* dump HTML */
 dom::dump();

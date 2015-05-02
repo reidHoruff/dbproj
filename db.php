@@ -5,7 +5,7 @@
  * but thats fine.
  */
 
-$username = "root3";
+$username = "root";
 $password = "root";
 $server = "localhost";
 $dbname = 'dbproj';
@@ -24,6 +24,10 @@ function create_professor($fname, $lname, $title, $type, $date_joined) {
   mysql_query("insert into instructors (first_name, last_name, title, type, date_joined) values ('$fname', '$lname', '$title', '$type', '$date_joined');");
 }
 
+function create_ta($fname, $lname) {
+  mysql_query("insert into tas (first_name, last_name) values ('$fname', '$lname');");
+}
+
 function create_book($title, $publisher, $edition, $isbn) {
   mysql_query("insert into books (title, publisher, edition, isbn) values ('$title', '$publisher', '$edition', '$isbn');");
 }
@@ -33,11 +37,15 @@ function create_course($code, $title, $desc, $required){
 }
 
 function create_section($course_id, $section, $capacity, $days, $enrollment, $room, $time, $crn){
-  mysql_query("insert into sections (course_id, section, capacity, days, enrollment, room, time, crn) values ('$c_number', '$section', '$capacity', '$days', '$enrollment', '$room', '$time', '$crn');");
+  mysql_query("insert into sections (course_id, section_number, capacity, days, enrollment, room, time, crn) values ('$course_id', '$section', '$capacity', '$days', '$enrollment', '$room', '$time', '$crn');");
 }
 
 function link_instructor_section($inst_id, $course_id){
   mysql_query("insert into instructor_to_section (instructor_id, section_id) values ('$inst_id', '$course_id')");
+}
+
+function link_ta_section($ta_id, $section_id, $hours){
+  mysql_query("insert into ta_to_section (section_id, ta_id, hours) values ('$ta_id', '$section_id', '$hours')");
 }
 
 //Getting Functions
@@ -55,4 +63,40 @@ function get_all_courses(){
 
 function get_all_sections(){
   return mysql_query("select * from sections;");
+}
+
+function get_all_tas(){
+  return mysql_query("select * from tas;");
+}
+
+/**
+ * **we understand that this isn't necessarily
+ * the best practice.**
+ *
+ * this takes a key values pair
+ * and assumes them to be a mapping of
+ * column names and data for that column and
+ * inserts the data into a new row in $table.
+ *
+ * $values = array(
+ * "name" => "joe",
+ * "age" => "35"
+ * );
+ *
+ * becomes
+ *
+ * insert into people (name, age) values ("joe", "35");
+ */
+function mysql_insert_dang($table, $values) {
+  unset($values['action']);
+  echo $values;
+  foreach ($values as $key => $value) {
+    $values[$key] = '"' . mysql_real_escape_string($value) . '"';
+  }
+  $sql = "insert into $table"
+    . '(' . implode(',', array_keys($values)) . ')'
+    . 'values'
+    . '(' . implode(',', $values) . ');';
+  echo $sql;
+  mysql_query($sql);
 }

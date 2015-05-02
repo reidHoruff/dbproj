@@ -1,4 +1,4 @@
-<?
+<?php
 require_once 'dom.php';
 /* 
  * add instructor form 
@@ -13,8 +13,8 @@ function add_instructor_form() {
   dom::h3('section-title', 'Add Instructor:');
   dom::push_div('section');
     dom::push_form('index.php');
-      dom::textinput('fname', 'First Name:'); 
-      dom::textinput('lname', 'Last Name:'); 
+      dom::textinput('first_name', 'First Name:'); 
+      dom::textinput('last_name', 'Last Name:'); 
       dom::textinput('title', 'Title:'); 
       dom::textinput('date_joined', 'Date Joined:'); 
       dom::label('Type:');
@@ -43,6 +43,21 @@ function add_text_book_form() {
 }
 
 /* 
+ * add TA Form
+ * */
+function add_ta_form() {
+  dom::h3('section-title', 'Add TA:');
+  dom::push_div('section');
+    dom::push_form('index.php');
+      dom::textinput('first_name', 'First name:'); 
+      dom::textinput('last_name', 'Last name:'); 
+      dom::hidden('action', 'add_ta'); 
+      dom::submit();
+    dom::pop();
+  dom::pop();
+}
+
+/* 
  * add course form 
  * */
 function add_course_form() {
@@ -53,9 +68,9 @@ function add_course_form() {
       dom::label('Type:');
       dom::dropdown('required', array('y' => "Required", "n" => "Elective"));
       dom::label('Lab:');
-      dom::dropdown('lab', array('n' => "no", "y" => "yes"));
+      dom::dropdown('is_lab', array('n' => "no", "y" => "yes"));
       dom::textinput('title', 'Title:'); 
-      dom::textinput('desc', 'Description:'); 
+      dom::textinput('description', 'Description:'); 
       dom::hidden('action', 'add_course'); 
       dom::submit();
     dom::pop();
@@ -71,35 +86,30 @@ function add_section_form() {
     "tth" => "T/Th",
   );
 
-  $courses = array();
-  $all_courses = get_all_courses();
-  while ($row = mysql_fetch_assoc($all_courses)) {
-    $courses[$row['id']] = $row['code'] . ' - ' . $row['title'];
-  }
+  $courses = all_course_data();
 
   dom::h3('section-title', 'Add Section:');
   dom::push_div('section');
     dom::push_form('index.php');
-      dom::textinput('section', 'Section Number:');
+      dom::textinput('section_number', 'Section Number:');
+      dom::textinput('crn', 'CRN:');
       dom::textinput('capacity', 'Capacity:');  
       dom::textinput('enrollment', 'Enrollment:'); 
       dom::textinput('room', 'Room:'); 
       dom::textinput('time', 'Time:'); 
-      dom::textinput('ta_name', 'Name of TA:'); 
-      dom::textinput('ta_hours', 'TA weekly hours:'); 
 
       dom::label('Course:');
       dom::dropdown('course_id', $courses);
 
       dom::label('Days:');
-      dom::dropdown('type', $days);
+      dom::dropdown('days', $days);
 
       dom::label('Semester:');
       dom::dropdown('semester', list_semesters());
 
 
       dom::label('Lecture Style:');
-      dom::dropdown('f2f', array('ftf' => 'Face to face', 'dis' => 'Distance lecture'));
+      dom::dropdown('lecture_type', array('ftf' => 'Face to face', 'dis' => 'Distance lecture'));
 
       dom::hidden('action', 'add_section'); 
       dom::submit();
@@ -111,17 +121,9 @@ function add_section_form() {
  * link sections and instructor
  * */
 function add_teacher_to_section() {
-  $teachers = array();
-  $all_teachers = get_all_profs();
-  while ($row = mysql_fetch_assoc($all_teachers)) {
-    $teachers[$row['id']] = $row['first_name'] . " " . $row['last_name'];
-  }
+  $teachers = all_teachers_data();
+  $sections = all_sections_data();
 
-  $sections = array();
-  $all_sections = get_all_sections();
-  while ($row = mysql_fetch_assoc($all_sections)) {
-    $sections[$row['id']] = $row['crn'];
-  }
   dom::h3('section-title', 'Link Instructor and Section:');
   dom::push_div('section');
     dom::push_form('index.php');
@@ -131,6 +133,32 @@ function add_teacher_to_section() {
 
       dom::label('section:');
       dom::dropdown('course_id', $sections);
+
+      dom::hidden('action', 'link_inst_sect'); 
+      dom::submit();
+    dom::pop();
+  dom::pop();
+}
+
+/* 
+ * link ta to section
+ * */
+function add_ta_to_section() {
+  $tas = all_ta_data();
+  $sections = all_sections_data();
+
+  dom::h3('section-title', 'Link TA and Section:');
+  dom::push_div('section');
+    dom::push_form('index.php');
+
+      dom::label('TA:');
+      dom::dropdown('ta_id', $tas);
+
+      dom::label('Section:');
+      dom::dropdown('section_id', $sections);
+
+      dom::label('Weekly Hours');
+      dom::dropdown('ta_hours', list_ta_hours());
 
       dom::hidden('action', 'link_inst_sect'); 
       dom::submit();
