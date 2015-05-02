@@ -7,26 +7,29 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +22 /Applications/XAMPP/xamppfiles/htdocs/dbproj/db.php
-badd +1 /Applications/XAMPP/xamppfiles/htdocs/dbproj/create.sql
-badd +135 /Applications/XAMPP/xamppfiles/htdocs/dbproj/index.php
-badd +169 ~/.vimrc
-badd +22 /Applications/XAMPP/xamppfiles/htdocs/dbproj/style.css
+badd +31 /Applications/XAMPP/xamppfiles/htdocs/dbproj/db.php
+badd +44 /Applications/XAMPP/xamppfiles/htdocs/dbproj/create.sql
+badd +126 /Applications/XAMPP/xamppfiles/htdocs/dbproj/index.php
+badd +1 ~/.vimrc
+badd +41 /Applications/XAMPP/xamppfiles/htdocs/dbproj/style.css
 badd +1 /Applications/XAMPP/xamppfiles/htdocs/dbproj/create.sh
+badd +42 /Applications/XAMPP/xamppfiles/htdocs/dbproj/helpers.php
+badd +95 /Applications/XAMPP/xamppfiles/htdocs/dbproj/forms.php
+badd +179 /Applications/XAMPP/xamppfiles/htdocs/dbproj/dom.php
 argglobal
 silent! argdel *
-edit /Applications/XAMPP/xamppfiles/htdocs/dbproj/style.css
+edit /Applications/XAMPP/xamppfiles/htdocs/dbproj/forms.php
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
 wincmd t
 set winheight=1 winwidth=1
 argglobal
-let s:l = 1 - ((0 * winheight(0) + 23) / 47)
+let s:l = 95 - ((21 * winheight(0) + 21) / 42)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
+95
 normal! 0
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf

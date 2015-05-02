@@ -5,7 +5,7 @@
  * but thats fine.
  */
 
-$username = "root";
+$username = "root3";
 $password = "root";
 $server = "localhost";
 $dbname = 'dbproj';
@@ -28,8 +28,8 @@ function create_book($title, $publisher, $edition, $isbn) {
   mysql_query("insert into books (title, publisher, edition, isbn) values ('$title', '$publisher', '$edition', '$isbn');");
 }
 
-function create_course($c_number, $title, $desc){
-  mysql_query("insert into courses (course_num, title, description) values ('$c_number', '$title', '$desc')");
+function create_course($c_number, $title, $desc, $required){
+  mysql_query("insert into courses (course_num, title, description, required) values ('$c_number', '$title', '$desc', '$required')");
 }
 
 function create_section($c_number, $section, $capacity, $days, $enrollment, $room, $time, $crn){

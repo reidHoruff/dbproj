@@ -14,6 +14,8 @@ create table profs (
 
 create table courses (
   course_num char(100) not null,
+  foreign key (lab_section) references courses(course_num)
+  required char(100) not null,
   title char(100) not null,
   description char(100),
   catalog int not null,
