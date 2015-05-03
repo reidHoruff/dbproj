@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * login page for professors
+ */
+
 require_once 'page_base.php';
 require_once 'db.php';
 require_once 'helpers.php';
@@ -25,8 +29,7 @@ class login_page extends base_page {
        * action for adding a professor 
        */
       if ($post['action'] == 'instructor_login') {
-        if (instructor_login($post['username'], 
-          $post['password']) == 1) {
+        if (instructor_login($post['username'], $post['password']) == 1) {
             $this->set_inst_is_loggedin(true);
             $this->set_username($post['username']);
             header("Location: prefs.php");

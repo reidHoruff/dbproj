@@ -7,29 +7,34 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +47 /var/www/html/dbproj/index.php
-badd +47 /var/www/html/dbproj/page_base.php
-badd +6 /var/www/html/dbproj/dom.php
+badd +8 /var/www/html/dbproj/index.php
+badd +46 /var/www/html/dbproj/page_base.php
+badd +1 /var/www/html/dbproj/dom.php
 badd +1 /var/www/html/dbproj/helpers.php
-badd +4 /var/www/html/dbproj/lists.php
-badd +44 /var/www/html/dbproj/db.php
-badd +281 /var/www/html/dbproj/forms.php
-badd +77 /var/www/html/dbproj/prefs.php
+badd +7 /var/www/html/dbproj/lists.php
+badd +1 /var/www/html/dbproj/db.php
+badd +274 /var/www/html/dbproj/forms.php
+badd +4 /var/www/html/dbproj/prefs.php
+badd +1 /var/www/html/dbproj/login.php
+badd +1 /var/www/html/dbproj/logout.php
+badd +145 /var/www/html/dbproj/res/style.css
+badd +4 /var/www/html/dbproj/val.php
+badd +1 /var/www/html/dbproj/deploy.sh
 argglobal
 silent! argdel *
-edit /var/www/html/dbproj/prefs.php
+edit /var/www/html/dbproj/logout.php
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
 wincmd t
 set winheight=1 winwidth=1
 argglobal
-let s:l = 90 - ((11 * winheight(0) + 23) / 46)
+let s:l = 33 - ((32 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-90
-normal! 07|
+33
+normal! 04|
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf
 endif

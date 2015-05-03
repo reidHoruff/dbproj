@@ -217,6 +217,10 @@ function login_form() {
   dom::pop();
 }
 
+/*
+ * course prefernce form for professor
+ * preferences page.
+ */
 function prof_course_pref_form($username) {
   $course_pref_options = array(
     "none" => "none",
@@ -243,6 +247,10 @@ function prof_course_pref_form($username) {
   dom::pop();
 }
 
+/*
+ * load preference form for professor
+ * preference page.
+ */
 function prof_load_pref_form($username) {
   $load_pref_options = array(
     'none' => 'no preference',
@@ -261,6 +269,9 @@ function prof_load_pref_form($username) {
   dom::pop();
 }
 
+/*
+ * special request form for professors that are logged in
+ */
 function prof_special_request_form($username) {
   $courses = all_course_data();
 

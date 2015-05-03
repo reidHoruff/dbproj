@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * this page is for debugging.
+ * lists various schemas and tables.
+ * will eventually allow SQL execution for forther
+ * dubugging purposes.
+ */
+
 require_once 'page_base.php';
 require_once 'db.php';
 require_once 'helpers.php';

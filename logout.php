@@ -1,5 +1,9 @@
 <?php
 
+/* 
+ * when visited current user is logged out 
+ * */
+
 require_once 'page_base.php';
 require_once 'db.php';
 require_once 'helpers.php';
@@ -22,12 +26,20 @@ class logout_page extends base_page {
   /*
    * this block handles all POST requests
    */
+  function handle_post($post) {
+    $this->logout();
+  }
+
+  /*
+   * logout before page is rendered
+   * so that header is rendered accordingly.
+   */
   function pre_render() {
     $this->logout();
   }
 
   function render_body() {
-    dom::h3("", "logout successful");
+    dom::h3("center", "logout successful.");
   }
 }
 

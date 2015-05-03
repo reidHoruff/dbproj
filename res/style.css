@@ -140,3 +140,7 @@ td {
 th {
   min-width: 120px;
 }
+
+.center {
+  text-align: center;
+}

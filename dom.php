@@ -1,5 +1,11 @@
 <?php
 
+/* this class generates dom elements and should
+ * be used rather that putting raw html
+ * in the php code which is messey and hard
+ * to modify.
+ */
+
 class dom {
   static $dom = null;
   static $current = null;

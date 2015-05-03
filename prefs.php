@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * this is a preference page that is only available
+ * for professors that have logged in.
+ */
+
 require_once 'page_base.php';
 require_once 'db.php';
 require_once 'helpers.php';
