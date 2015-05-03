@@ -22,20 +22,19 @@ class prefs_page extends base_page {
   /*
    * this block handles all POST requests
    */
-  function pre_render() {
-    if (isset($_POST['action'])) {
+  function handle_post($post) {
+    if (isset($post['action'])) {
 
       /**
        * action is to update course pref.
        * old preference is deleted if exists
        * and new one is added only if preference is not 'none'
        */
-      if ($_POST['action'] == 'update_course_prefs') {
-        delete_existing_pref($this->get_username(), $_POST['course_id']);
-        if ($_POST['pref'] != 'none') {
-          mysql_insert_dang('prof_prefs', $_POST);
+      if ($post['action'] == 'update_course_prefs') {
+        delete_existing_pref($this->get_username(), $post['course_id']);
+        if ($post['pref'] != 'none') {
+          mysql_insert_dang('prof_prefs', $post);
         }
-        header('Location: prefs.php');
       }
 
       /*
@@ -44,25 +43,22 @@ class prefs_page extends base_page {
        * one was is created via a trigger when an professor
        * is added.
        */
-      else if ($_POST['action'] == 'update_load_pref') {
-        update_load_preference($this->get_username(), $_POST['pref']);
-        header('Location: prefs.php');
+      else if ($post['action'] == 'update_load_pref') {
+        update_load_preference($this->get_username(), $post['pref']);
       }
 
       /*
        * create special request
        */
-      else if ($_POST['action'] == 'special_request') {
-        mysql_insert_dang('special_requesta', $_POST);
-        header('Location: prefs.php');
+      else if ($post['action'] == 'special_request') {
+        mysql_insert_dang('special_requesta', $post);
       }
 
       /*
        * set semester
        */
-      else if ($_POST['action'] == 'set_semester') {
-        $_SESSION['semester'] = $_POST['semester'];
-        header('Location: prefs.php');
+      else if ($post['action'] == 'set_semester') {
+        $_SESSION['semester'] = $post['semester'];
       }
 
       else {

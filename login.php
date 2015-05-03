@@ -19,37 +19,28 @@ class login_page extends base_page {
   /*
    * this block handles all POST requests
    */
-  function pre_render() {
-    if (isset($_POST['action'])) {
+  function handle_post($post) {
+    if (isset($post['action'])) {
       /* 
        * action for adding a professor 
        */
-      if ($_POST['action'] == 'instructor_login') {
-        if (instructor_login($_POST['username'], 
-          $_POST['password']) == 1) {
+      if ($post['action'] == 'instructor_login') {
+        if (instructor_login($post['username'], 
+          $post['password']) == 1) {
             $this->set_inst_is_loggedin(true);
-            $this->set_username($_POST['username']);
+            $this->set_username($post['username']);
             header("Location: prefs.php");
             die();
         } else {
           $this->set_inst_is_loggedin(false);
+          $this->set_message('foobar');
           $this->set_error("unable to login");
         }
       } 
 
-      else {
-      }
-      /*
-       * after POST save messages in session and redirect
-       * to same page but with a GET to avoid
-       * annoying POST resubmission messages
-       * on the browser's end.
-       */
       if (mysql_error()) {
         $this->set_error(mysql_error());
       }
-      header("Location: login.php");
-      die();
     } 
   }
 

@@ -5,9 +5,6 @@ require_once 'helpers.php';
 
 class base_page {
 
-  function init() {
-  }
-
   function page_name() {
     return 'base';
   }
@@ -30,18 +27,17 @@ class base_page {
   }
 
   function set_error($e) {
-    global $_SESSION;
     $_SESSION['error' . $this->page_name()] = $e;
   }
 
   function logout() {
     $this->set_inst_is_loggedin(false);
+    session_destroy();
   }
 
   function set_inst_is_loggedin($logged_in) {
     if ($logged_in != true) {
       $this->set_username(null);
-      session_destroy();
     }
     $_SESSION['loggedin-inst'] = $logged_in;
   }
@@ -106,6 +102,16 @@ class base_page {
     $this->set_message(null);
   }
 
+  function handle_post($post) {
+  }
+
+  function handle_get($post) {
+    $this->pre_render();
+    $this->render_head();
+    $this->render_body();
+    dom::dump();
+  }
+
   function dump() {
     /*
      * should be first thing called
@@ -118,13 +124,24 @@ class base_page {
     if (
       $this->require_login() == true 
       and $this->is_inst_logged_in() == false) {
-      die("permission denied " . bool($this->is_inst_logged_in()) . " " . bool($this->require_login()));
+      die("permission denied");
     }
 
-    $this->init();
-    $this->pre_render();
-    $this->render_head();
-    $this->render_body();
-    dom::dump();
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      /*
+       * after POST save messages in session and redirect
+       * to same page but with a GET to avoid
+       * annoying POST resubmission messages
+       * on the browser's end.
+       */
+      $this->handle_post($_POST);
+      header('Location: ' . $this->page_name());
+    } 
+    else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+      $this->handle_get($_GET);
+    }
+    else {
+      die('unsupported request');
+    }
   }
 }

@@ -255,7 +255,7 @@ class dom {
       self::link('login.php', 'Professor Login');
     }
 
-    self::link('lists.php', 'Lists [debugging]');
+    self::link('lists.php', '[debugging]');
     self::pop();
     self::push_div('content');
   }
