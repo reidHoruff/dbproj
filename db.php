@@ -53,6 +53,10 @@ function get_all_profs() {
   return mysql_query("select * from instructors inner join eraiders on instructors.username=eraiders.username;");// or die(mysq_ery());
 }
 
+function get_prefs_for_prof($username) {
+  return mysql_query("select * from courses left join (select * from prof_prefs where username='$username') as t on courses.id=t.course_id;");
+}
+
 function get_all_books() {
   return mysql_query("select * from books;");
 }
@@ -71,6 +75,19 @@ function get_all_tas(){
 
 function get_all_eraiders(){
   return mysql_query("select * from eraiders;");
+}
+
+function get_load_preference($username) {
+  return mysql_result(mysql_query("select load_preference from load_preference where username='$username'"), 0);
+}
+
+function update_load_preference($username, $pref) {
+  mysql_query("update load_preference set load_preference='$pref' where username='$username';");
+}
+
+function delete_existing_pref($username, $course_id) {
+  $year = CURRENT_YEAR;
+  mysql_query("delete from prof_prefs where username='$username' and year='$year' and course_id='$course_id';");
 }
 
 /**

@@ -49,14 +49,22 @@ select {
 button {
   padding: 4px;
   margin: 4px;
-  margin-left: 130px;
   border: 1px solid grey;
   background: #f0f0f0;
   height: 25px;
 }
 
+.section > form > button {
+  margin-left: 130px;
+}
+
 .content {
   padding: 8px;
+}
+
+.course > form > select {
+  width: 60px;
+  margin-left: 12px;
 }
 
 .section {

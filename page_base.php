@@ -6,7 +6,6 @@ require_once 'helpers.php';
 class base_page {
 
   function init() {
-    session_start();
   }
 
   function page_name() {
@@ -107,6 +106,10 @@ class base_page {
   }
 
   function dump() {
+    /*
+     * should be first thing called
+     */
+    session_start();
     /**
      * deny requests to page if login is required and
      * user is not logged int

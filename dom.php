@@ -66,10 +66,18 @@ class dom {
    * in $elements.
    * adds element to current node.
    */
-  static function dropdown($name, $elements) {
+  static function dropdown($name, $elements, $default=false, $submit=false) {
     global $dom;
     $select = $dom->createElement('select');
     $select->setAttribute('name', $name);
+
+    /*
+     * if submit is true then the parent for 
+     * is submitted when the value is changed
+   */
+    if ($submit) {
+      $select->setAttribute('onchange', "this.form.submit();");
+    }
 
     if (empty($elements)) {
       $option = $dom->createElement('option', "");
@@ -80,6 +88,9 @@ class dom {
     foreach ($elements as $key => $value) {
       $option = $dom->createElement('option', $value);
       $option->setAttribute('value', $key);
+      if ($key == $default) {
+        $option->setAttribute('selected', 'selected');
+      }
       $select->appendChild($option);
     }
 
@@ -92,6 +103,11 @@ class dom {
     self::append($dom->createElement('label', $text));
   }
 
+  static function br() {
+    global $dom;
+    self::append($dom->createElement('br'));
+  }
+
   static function textinput($name, $text) {
     global $dom;
     self::label($text);
@@ -101,6 +117,13 @@ class dom {
     self::append($input);
 
     self::append($dom->createElement('br'));
+  }
+
+  static function textarea($name, $text="&nbsp;") {
+    global $dom;
+    $input = $dom->createElement('textarea', $text);
+    $input->setAttribute('name', $name);
+    self::append($input);
   }
 
   static function password($name, $text) {

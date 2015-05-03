@@ -25,13 +25,12 @@ class login_page extends base_page {
        * action for adding a professor 
        */
       if ($_POST['action'] == 'instructor_login') {
-        if (instructor_login(
-          $_POST['username'], 
+        if (instructor_login($_POST['username'], 
           $_POST['password']) == 1) {
             $this->set_inst_is_loggedin(true);
-            $this->set_username($username);
-          header("Location: prefs.php");
-          die();
+            $this->set_username($_POST['username']);
+            header("Location: prefs.php");
+            die();
         } else {
           $this->set_inst_is_loggedin(false);
           $this->set_error("unable to login");

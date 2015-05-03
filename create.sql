@@ -24,6 +24,31 @@ create table instructors (
   primary key (id)
 );
 
+create table load_preference (
+  username char(255) not null,
+  load_preference char(255) not null,
+  /*
+  fall, spring, none
+  */
+  foreign key (username) references eraiders(username)
+);
+
+delimiter |
+create trigger default_load_preference after insert on instructors 
+  for each row begin
+    if (new.type = 'tenured' or new.type = 'untenured') then
+      insert into load_preference (username, load_preference)
+      values
+      (new.username, 'none');
+    end if;
+  end|
+delimiter ;
+
+create VIEW profs AS SELECT first_name from
+eraiders INNER JOIN instructors ON
+eraiders.username=instructors.username 
+WHERE instructors.type='tenured' OR instructors.type='untenured';
+
 create table tas (
   id int not null AUTO_INCREMENT,
   first_name char(255) not null,
@@ -93,6 +118,20 @@ create table section_to_lab_section (
   foreign key (section_id) references sections(id),
   foreign key (lab_section_id) references sections(id)
 );
+
+create table prof_prefs(
+  course_id int,
+  username char(255),
+  pref int,
+  year int,
+  foreign key (course_id) references courses(id),
+  foreign key (username) references instructors(username)
+);
+
+create view prof_course_preferences as 
+SELECT * FROM
+courses LEFT JOIN prof_prefs on courses.id=prof_prefs.course_id;
+
 
 /**
 data eraiders

@@ -1,6 +1,8 @@
 <?php
 require_once 'dom.php';
 
+const CURRENT_YEAR = 2015;
+
 /*
  * list professors
  */
@@ -66,7 +68,7 @@ function list_sections() {
  */
 function list_semesters() {
   $semesters = array();
-  for ($i = 2015; $i < 2017; $i++) {
+  for ($i = CURRENT_YEAR; $i < CURRENT_YEAR + 3; $i++) {
     $str = 'Spring ' . $i;
     $semesters[$str] = $str;
     $str = 'Fall ' . $i;
