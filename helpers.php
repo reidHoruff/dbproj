@@ -156,4 +156,12 @@ function bool($b) {
   }
 }
 
+function get($arr, $key, $default=null) {
+  if (isset($arr[$key])) {
+    return $arr[$key];
+  } else {
+    return $default;
+  }
+}
+
 

@@ -26,7 +26,7 @@ class base_page {
   }
 
   function get_message() {
-    return $_SESSION['message' . $this->page_name()];
+    return get($_SESSION, 'message'.$this->page_name());
   }
 
   function set_error($e) {
@@ -59,7 +59,7 @@ class base_page {
   }
 
   function get_error() {
-    return $_SESSION['error' . $this->page_name()];
+    return get($_SESSION, 'error'.$this->page_name());
   }
 
   function pre_render() {
