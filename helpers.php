@@ -1,4 +1,8 @@
 <?php
+
+/*
+ * general utility functions and constants
+ */
 require_once 'dom.php';
 
 const CURRENT_YEAR = 2015;
@@ -38,7 +42,6 @@ function list_ta_hours() {
  * aggregates all data from schemas for
  * the purpose of html drop down selectors
  */
-
 function all_teachers_data() {
   $teachers = array();
   $all_teachers = get_all_profs();

@@ -1,5 +1,11 @@
 <?php
+
+/*
+ * file that contains various forms.
+ */
+
 require_once 'dom.php';
+
 /**
  * add eraider
  */
@@ -206,6 +212,69 @@ function login_form() {
       dom::textinput('username', "Username:");
       dom::password('password', "Password:");
       dom::hidden('action', 'instructor_login'); 
+      dom::submit();
+    dom::pop();
+  dom::pop();
+}
+
+function prof_course_pref_form($username) {
+  $course_pref_options = array(
+    "none" => "none",
+    "1" => "1",
+    "2" => "2",
+    "3" => "3"
+  );
+  dom::h3('section-title', 'Course Preferences for ' . CURRENT_YEAR);
+  dom::push_div('section');
+  $prefs = get_prefs_for_prof($username);
+  while ($row = mysql_fetch_assoc($prefs)) {
+    $default = $row['pref'];
+    dom::push_div('course');
+      dom::push_form('prefs.php');
+        dom::label($row['code'] . ' - ' . $row['title']);
+        dom::dropdown('pref', $course_pref_options, $default, true);
+        dom::hidden('year', CURRENT_YEAR);
+        dom::hidden('username', $username);
+        dom::hidden('course_id', $row['id']);
+        dom::hidden('action', 'update_course_prefs');
+      dom::pop();
+    dom::pop();
+  }
+  dom::pop();
+}
+
+function prof_load_pref_form($username) {
+  $load_pref_options = array(
+    'none' => 'no preference',
+    'fall' => "fall",
+    'spring' => "spring"
+  );
+
+  $current_load_pref = get_load_preference($username);
+
+  dom::h3('section-title', 'Teaching Load Preference');
+  dom::push_div('section');
+    dom::push_form('prefs.php');
+      dom::dropdown('pref', $load_pref_options, $current_load_pref, true);
+      dom::hidden('action', 'update_load_pref');
+    dom::pop();
+  dom::pop();
+}
+
+function prof_special_request_form($username) {
+  $courses = all_course_data();
+
+  dom::h3('section-title', 'Special Reqeusts');
+  dom::push_div('section');
+    dom::push_form('prefs.php');
+      dom::label('Course:');
+      dom::dropdown('course_id', $courses);
+      dom::textinput('title', 'Title');
+      dom::label('Justification');
+      dom::textarea('justification');
+      dom::hidden('username', $username);
+      dom::hidden('action', 'special_request');
+      dom::br();
       dom::submit();
     dom::pop();
   dom::pop();

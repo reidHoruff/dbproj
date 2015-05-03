@@ -4,6 +4,7 @@ require_once 'page_base.php';
 require_once 'db.php';
 require_once 'helpers.php';
 require_once 'dom.php';
+require_once 'forms.php';
 
 class prefs_page extends base_page {
 
@@ -52,6 +53,7 @@ class prefs_page extends base_page {
        */
       else if ($post['action'] == 'special_request') {
         mysql_insert_dang('special_requesta', $post);
+        $this->set_message("special request submitted.");
       }
 
       /*
@@ -67,64 +69,10 @@ class prefs_page extends base_page {
   }
 
   function render_body() {
-    $course_pref_options = array(
-      "none" => "none",
-      "1" => "1",
-      "2" => "2",
-      "3" => "3"
-    );
-    dom::h3('section-title', 'Course Preferences for ' . CURRENT_YEAR);
-    dom::push_div('section');
-    $prefs = get_prefs_for_prof($this->get_username());
-    while ($row = mysql_fetch_assoc($prefs)) {
-      $default = $row['pref'];
-      dom::push_div('course');
-        dom::push_form('prefs.php');
-          dom::label($row['code'] . ' - ' . $row['title']);
-          dom::dropdown('pref', $course_pref_options, $default, true);
-          dom::hidden('year', CURRENT_YEAR);
-          dom::hidden('username', $this->get_username());
-          dom::hidden('course_id', $row['id']);
-          dom::hidden('action', 'update_course_prefs');
-        dom::pop();
-      dom::pop();
-    }
-    dom::pop();
-
-
-    $load_pref_options = array(
-      'none' => 'no preference',
-      'fall' => "fall",
-      'spring' => "spring"
-    );
-
-    $current_load_pref = get_load_preference($this->get_username());
-
-    dom::h3('section-title', 'Teaching Load Preference');
-    dom::push_div('section');
-      dom::push_form('prefs.php');
-        dom::dropdown('pref', $load_pref_options, $current_load_pref, true);
-        dom::hidden('action', 'update_load_pref');
-      dom::pop();
-    dom::pop();
-
-
-    $courses = all_course_data();
-
-    dom::h3('section-title', 'Special Reqeusts');
-    dom::push_div('section');
-      dom::push_form('prefs.php');
-        dom::label('Course:');
-        dom::dropdown('course_id', $courses);
-        dom::textinput('title', 'Title');
-        dom::label('Justification');
-        dom::textarea('justification');
-        dom::hidden('username', $this->get_username());
-        dom::hidden('action', 'special_request');
-        dom::br();
-        dom::submit();
-      dom::pop();
-    dom::pop();
+    $username = $this->get_username();
+    prof_course_pref_form($username);
+    prof_load_pref_form($username);
+    prof_special_request_form($username);
 
     $semester = CURRENT_SEMESTER;
     if (isset($_SESSION['semester'])) {

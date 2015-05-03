@@ -233,7 +233,7 @@ class dom {
     $link = $dom->createElement('link');
       $link->setAttribute('rel', 'stylesheet');
       $link->setAttribute('type', 'text/css');
-      $link->setAttribute('href', 'style.css');
+      $link->setAttribute('href', 'res/style.css');
     self::append($link);
 
     self::pop();
@@ -241,6 +241,11 @@ class dom {
     $body = $dom->createElement('body');
     self::push($body);
     self::push_div('header boarder');
+
+    $img = $dom->createElement('img');
+    $img->setAttribute('src', 'res/tt.png');
+    self::append($img);
+
     self::h3('', $page->header_title());
     self::link('index.php', 'Admin Panel');
 

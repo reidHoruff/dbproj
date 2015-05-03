@@ -1,72 +1,138 @@
 <?php
 
+/*
+ * This is base class that all pages
+ * inherit from. It provides/abstracts
+ * basic functionality that is common across
+ * all pages and makes new page creation trivial.
+ * There are only a few functions that must be overwritten
+ * to provede uniform functionality across pages.
+ */
+
 require_once 'dom.php';
 require_once 'helpers.php';
 
 class base_page {
 
+  /*
+   * must overwrite for each page:
+   * eg return value would be 'index.php'.
+   *
+   * This allows the post handler to know
+   * where to redirect back to. it is also used 
+   * to salt session keys so that messages don't
+   * clash across multiple pages.
+   */
   function page_name() {
     return 'base';
   }
 
-  function set_message($m) {
-    global $_SESSION;
-    $_SESSION['message' . $this->page_name()] = $m;
-  }
-
+  /*
+   * option to overwrite:
+   * if returns true then the page will
+   * not allow request, POST or GET, if the
+   * requester is not logged in.
+   */
   function require_login() {
     return false;
   }
 
+  /*
+   * overwrite this so set the page header title.
+   */
   function header_title() {
     return 'Course Management System';
   }
 
-  function get_message() {
-    return get($_SESSION, 'message'.$this->page_name());
+  /*
+   * called on GET requests before any html is rendered.
+   * can be thought of as an init() function
+   */
+  function pre_render() {
   }
 
-  function set_error($e) {
+  /*
+   * this should be overwritten to contain 
+   * the body DOM construction
+   */
+  function render_body() {
+    dom::h3('', "hello world!");
+  }
+
+  /*
+   * called on POST requests. page
+   * is not rendered on POST requests. only
+   * this method is called. Page is the GET redirected
+   * back to page_name()
+   */
+  function handle_post($post) {
+  }
+
+  /*
+   * this can be overwritten but you probably don't want to.
+   */
+  function handle_get($post) {
+    $this->pre_render();
+    $this->render_head();
+    $this->render_body();
+    dom::dump();
+  }
+
+
+  /*
+   * the following four functions may be called to set
+   */
+  final function set_message($m) {
+    $_SESSION['message' . $this->page_name()] = $m;
+  }
+
+  final function set_error($e) {
     $_SESSION['error' . $this->page_name()] = $e;
   }
 
-  function logout() {
+  private function get_message() {
+    return get($_SESSION, 'message'.$this->page_name());
+  }
+
+  private function get_error() {
+    return get($_SESSION, 'error'.$this->page_name());
+  }
+
+  /*
+   * logs user out and clears all session data
+   */
+  final function logout() {
     $this->set_inst_is_loggedin(false);
     session_destroy();
   }
 
-  function set_inst_is_loggedin($logged_in) {
+  final function set_inst_is_loggedin($logged_in) {
     if ($logged_in != true) {
       $this->set_username(null);
     }
     $_SESSION['loggedin-inst'] = $logged_in;
   }
 
-  function is_inst_logged_in() {
+  /*
+   * returns true if instructor is logged in.
+   */
+  final function is_inst_logged_in() {
     return isset($_SESSION['loggedin-inst']) and $_SESSION['loggedin-inst'] == true;
   }
 
-  function set_username($un) {
+  final function set_username($un) {
     $_SESSION['username'] = $un;
   }
 
-  function get_username() {
+  final function get_username() {
     return $_SESSION['username'];
   }
 
-  function get_error() {
-    return get($_SESSION, 'error'.$this->page_name());
-  }
-
-  function pre_render() {
-    /** to be overwritten */
-  }
-
-  function render_body() {
-    /* to be over written */
-  }
-
-  function render_head() {
+  /*
+   * renders the basic page template layout and
+   * messages and error messages. then clears messages and errors.
+   */
+  private function render_head() {
     /* 
      * begin HTML rendering... 
      */
@@ -102,17 +168,11 @@ class base_page {
     $this->set_message(null);
   }
 
-  function handle_post($post) {
-  }
-
-  function handle_get($post) {
-    $this->pre_render();
-    $this->render_head();
-    $this->render_body();
-    dom::dump();
-  }
-
-  function dump() {
+  /*
+   * Point of entry.
+   * the only function that should be called directly by a page.
+   */
+  final function dump() {
     /*
      * should be first thing called
      */
