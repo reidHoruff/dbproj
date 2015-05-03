@@ -41,6 +41,7 @@ class base_page {
   function set_inst_is_loggedin($logged_in) {
     if ($logged_in != true) {
       $this->set_username(null);
+      session_destroy();
     }
     $_SESSION['loggedin-inst'] = $logged_in;
   }

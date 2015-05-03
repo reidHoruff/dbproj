@@ -24,6 +24,12 @@ class prefs_page extends base_page {
    */
   function pre_render() {
     if (isset($_POST['action'])) {
+
+      /**
+       * action is to update course pref.
+       * old preference is deleted if exists
+       * and new one is added only if preference is not 'none'
+       */
       if ($_POST['action'] == 'update_course_prefs') {
         delete_existing_pref($this->get_username(), $_POST['course_id']);
         if ($_POST['pref'] != 'none') {
@@ -32,8 +38,34 @@ class prefs_page extends base_page {
         header('Location: prefs.php');
       }
 
+      /*
+       * action is to update load distribution.
+       * A preference for this already exists because
+       * one was is created via a trigger when an professor
+       * is added.
+       */
       else if ($_POST['action'] == 'update_load_pref') {
-        update_load_pref($this->get_username(), $_POST['pref']);
+        update_load_preference($this->get_username(), $_POST['pref']);
+        header('Location: prefs.php');
+      }
+
+      /*
+       * create special request
+       */
+      else if ($_POST['action'] == 'special_request') {
+        mysql_insert_dang('special_requesta', $_POST);
+        header('Location: prefs.php');
+      }
+
+      /*
+       * set semester
+       */
+      else if ($_POST['action'] == 'set_semester') {
+        $_SESSION['semester'] = $_POST['semester'];
+        header('Location: prefs.php');
+      }
+
+      else {
       }
     }
   }
@@ -45,7 +77,7 @@ class prefs_page extends base_page {
       "2" => "2",
       "3" => "3"
     );
-    dom::h3('', 'Course Preferences for ' . CURRENT_YEAR);
+    dom::h3('section-title', 'Course Preferences for ' . CURRENT_YEAR);
     dom::push_div('section');
     $prefs = get_prefs_for_prof($this->get_username());
     while ($row = mysql_fetch_assoc($prefs)) {
@@ -65,18 +97,72 @@ class prefs_page extends base_page {
 
 
     $load_pref_options = array(
-      'fall' => "fall",
       'none' => 'no preference',
+      'fall' => "fall",
       'spring' => "spring"
     );
 
     $current_load_pref = get_load_preference($this->get_username());
 
-    dom::h3('', 'Load Preferences');
+    dom::h3('section-title', 'Teaching Load Preference');
     dom::push_div('section');
       dom::push_form('prefs.php');
-        dom::dropdown('pref', $load_pref_options, $current_load_pref);
+        dom::dropdown('pref', $load_pref_options, $current_load_pref, true);
         dom::hidden('action', 'update_load_pref');
+      dom::pop();
+    dom::pop();
+
+
+    $courses = all_course_data();
+
+    dom::h3('section-title', 'Special Reqeusts');
+    dom::push_div('section');
+      dom::push_form('prefs.php');
+        dom::label('Course:');
+        dom::dropdown('course_id', $courses);
+        dom::textinput('title', 'Title');
+        dom::label('Justification');
+        dom::textarea('justification');
+        dom::hidden('username', $this->get_username());
+        dom::hidden('action', 'special_request');
+        dom::br();
+        dom::submit();
+      dom::pop();
+    dom::pop();
+
+    $semester = CURRENT_SEMESTER;
+    if (isset($_SESSION['semester'])) {
+      $semester = $_SESSION['semester'];
+    }
+
+    $sections = get_sections_assigned_to($this->get_username(), $semester);
+
+    dom::h3('section-title', 'Assigned to me');
+    dom::push_div('section');
+      dom::push_form('prefs.php');
+        dom::label('semester:');
+        dom::dropdown('semester', list_semesters(), $semester, true);
+        dom::hidden('action', 'set_semester');
+        dom::br();
+      dom::pop();
+
+      dom::push_table();
+        dom::push_tr();
+          dom::push_th('Course Code');
+          dom::push_th('Time');
+          dom::push_th('Days');
+          dom::push_th('Room');
+          dom::push_th('Building');
+        dom::pop();
+        while ($r = mysql_fetch_assoc($sections)) {
+          dom::push_tr();
+            dom::push_td($r['code']);
+            dom::push_td($r['time']);
+            dom::push_td($r['days']);
+            dom::push_td($r['room']);
+            dom::push_td($r['building']);
+          dom::pop();
+        }
       dom::pop();
     dom::pop();
   }

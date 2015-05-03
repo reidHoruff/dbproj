@@ -90,6 +90,10 @@ function delete_existing_pref($username, $course_id) {
   mysql_query("delete from prof_prefs where username='$username' and year='$year' and course_id='$course_id';");
 }
 
+function get_sections_assigned_to($username, $semester) {
+  return mysql_query("select * from sections inner join instructor_to_section on sections.id=instructor_to_section.section_id inner join courses on courses.id=sections.course_id where instructor_to_section.instructor_id=(select id from instructors where username='$username') and sections.semester='$semester';");
+}
+
 /**
  * login functions
  */

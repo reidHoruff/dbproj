@@ -33,6 +33,10 @@ create table load_preference (
   foreign key (username) references eraiders(username)
 );
 
+/**
+this trigger creates a 'load_prefernce' row when an instructor
+is created of type instuctor'
+*/
 delimiter |
 create trigger default_load_preference after insert on instructors 
   for each row begin
@@ -44,6 +48,19 @@ create trigger default_load_preference after insert on instructors
   end|
 delimiter ;
 
+create table special_requests (
+  username char(255) not null,
+  course_id int,
+  title char(255) not null,
+  justification text not null,
+  foreign key (username) references instructors(username),
+  foreign key (username) references eraiders(username)
+);
+
+/*
+this vie gives us easy access to the professors,
+that is, instructors of type professor [tenured, or untenured]
+*/
 create VIEW profs AS SELECT first_name from
 eraiders INNER JOIN instructors ON
 eraiders.username=instructors.username 
@@ -75,6 +92,7 @@ create table sections (
   section_number char(100) not null,
   semester char(100) not null,
   enrollment int not null,
+  building char(100) not null,
   room char(100) not null,
   lecture_type char(100) not null,
   time char(255) not null,

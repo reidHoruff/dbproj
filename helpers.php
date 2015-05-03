@@ -2,6 +2,7 @@
 require_once 'dom.php';
 
 const CURRENT_YEAR = 2015;
+const CURRENT_SEMESTER = 'Spring 2015';
 
 /*
  * list professors

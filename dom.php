@@ -160,6 +160,30 @@ class dom {
     self::append($input);
   }
 
+  static function push_table() {
+    global $dom;
+    $table = $dom->createElement('table');
+    self::push($table);
+  }
+
+  static function push_tr() {
+    global $dom;
+    $tr = $dom->createElement('tr');
+    self::push($tr);
+  }
+
+  static function push_td($value) {
+    global $dom;
+    $td = $dom->createElement('td', $value);
+    self::push($td);
+  }
+
+  static function push_th($value) {
+    global $dom;
+    $td = $dom->createElement('th', $value);
+    self::push($td);
+  }
+
   static function push_div($class) {
     global $dom;
     $div = $dom->createElement('div');

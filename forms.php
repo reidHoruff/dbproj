@@ -104,6 +104,13 @@ function add_section_form() {
     "tth" => "T/Th",
   );
 
+  $buildings = array(
+    "Honlden Hall" => "Holden Hall",
+    "Computer Science" => "Computer Science",
+    "Electrical Engineering" => "Electrical Engineering",
+    "Civil Engineering" => "Civil Engineering"
+  );
+
   $courses = all_course_data();
 
   dom::h3('section-title', 'Add Section:');
@@ -114,6 +121,10 @@ function add_section_form() {
       dom::textinput('capacity', 'Capacity:');  
       dom::textinput('enrollment', 'Enrollment:'); 
       dom::textinput('room', 'Room:'); 
+
+      dom::label('Building:');
+      dom::dropdown('building', $buildings);
+
       dom::textinput('time', 'Time:'); 
 
       dom::label('Course:');

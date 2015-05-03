@@ -107,3 +107,15 @@ button {
   padding: 0px;
   margin: 0px;
 }
+
+table, th, td {
+  border: 1px solid black;
+}
+
+td {
+  padding: 4px;
+}
+
+th {
+  min-width: 120px;
+}
