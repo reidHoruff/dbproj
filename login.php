@@ -29,15 +29,24 @@ class login_page extends base_page {
        * action for adding a professor 
        */
       if ($post['action'] == 'instructor_login') {
-        if (instructor_login($post['username'], $post['password']) == 1) {
-            $this->set_inst_is_loggedin(true);
-            $this->set_username($post['username']);
-            header("Location: prefs.php");
-            die();
+        $u = $post['username'];
+        $p = $post['password'];
+
+        if (instructor_login($u, $p) == 1) {
+            $this->set_inst_is_loggedin();
+            $this->set_username($u);
+        } 
+
+        if (business_login($u, $p) == 1) {
+            $this->set_business_is_loggedin();
+            $this->set_username($u);
+        } 
+
+        if ($this->is_logged_in()) {
+          header("Location: prefs.php");
+          die();
         } else {
-          $this->set_inst_is_loggedin(false);
-          $this->set_message('foobar');
-          $this->set_error("unable to login");
+          $this->set_error("unable to login.");
         }
       } 
 

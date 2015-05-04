@@ -255,15 +255,18 @@ class dom {
     self::h3('', $page->header_title());
     self::link('index.php', 'Admin Panel');
 
-    if ($page->is_inst_logged_in()) 
-    {
+    if ($page->is_inst_logged_in()) {
       self::link('prefs.php', 'Professor Preferences');
-      self::link('logout.php', 'logout');
     } 
 
-    else 
-    {
-      self::link('login.php', 'Professor Login');
+    if ($page->is_business_logged_in()) {
+      self::link('business.php', 'Business Admin');
+    } 
+
+    if ($page->is_logged_in()) {
+      self::link('logout.php', 'logout');
+    } else {
+      self::link('login.php', 'Login');
     }
 
     self::link('lists.php', '[debugging]');

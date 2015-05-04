@@ -50,6 +50,22 @@ function add_instructor_form() {
 }
 
 /* 
+ * link business admin form
+ */
+function link_business_admin_form() {
+  dom::h3('section-title', 'Make business admin:');
+  dom::push_div('section');
+    dom::push_form('index.php');
+      dom::label('Username:');
+      dom::dropdown('username', all_eraiders_data());
+      dom::hidden('action', 'add_business_admin'); 
+      dom::submit();
+    dom::pop();
+  dom::pop();
+}
+
+
+/* 
  * add text book form 
  * */
 function add_text_book_form() {

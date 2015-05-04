@@ -38,6 +38,14 @@ class index_page extends base_page {
         mysql_insert_dang('eraiders', $post, array('password2'));
         $this->set_message("Teacher successfully added.");
       } 
+
+      /* 
+       * action for business admin
+       */
+      if ($action == 'add_business_admin') {
+        mysql_insert_dang('business_admins', $post);
+        $this->set_message("Business administrator successfully added.");
+      } 
       
       /*
        * action for adding a book
@@ -102,6 +110,7 @@ class index_page extends base_page {
   function render_body() {
     add_eraider_form();
     add_instructor_form();
+    link_business_admin_form();
     add_course_form();
     add_section_form();
     add_text_book_form();

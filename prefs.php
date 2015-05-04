@@ -21,7 +21,10 @@ class prefs_page extends base_page {
     return 'prefs.php';
   }
 
-  function require_login() {
+  /*
+   * require instructor to be logged in
+   */
+  function require_inst_login() {
     return true;
   }
 

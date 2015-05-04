@@ -24,6 +24,13 @@ create table instructors (
   primary key (id)
 );
 
+create table business_admins (
+  id int not null AUTO_INCREMENT,
+  username char(255) not null,
+  foreign key (username) references eraiders(username),
+  primary key (id)
+);
+
 create table load_preference (
   username char(255) not null,
   load_preference char(255) not null,

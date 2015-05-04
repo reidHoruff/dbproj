@@ -5,7 +5,7 @@
  * but thats fine.
  */
 
-$username = "root";
+$username = "root3";
 $password = "root";
 $server = "localhost";
 $dbname = 'dbproj';
@@ -100,6 +100,10 @@ function get_sections_assigned_to($username, $semester) {
 
 function instructor_login($username, $password) {
   return mysql_result(mysql_query("select count(*) from instructors inner join eraiders on instructors.username=eraiders.username where eraiders.username='$username' and eraiders.password='$password'"), 0);
+}
+
+function business_login($username, $password) {
+  return mysql_result(mysql_query("select count(*) from business_admins inner join eraiders on business_admins.username=eraiders.username where eraiders.username='$username' and eraiders.password='$password'"), 0);
 }
 
 /**

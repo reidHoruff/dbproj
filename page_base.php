@@ -37,6 +37,14 @@ class base_page {
     return false;
   }
 
+  function require_inst_login() {
+    return false;
+  }
+
+  function require_business_login() {
+    return false;
+  }
+
   /*
    * overwrite this so set the page header title.
    */
@@ -102,15 +110,16 @@ class base_page {
    * logs user out and clears all session data
    */
   final function logout() {
-    $this->set_inst_is_loggedin(false);
+    session_unset();
     session_destroy();
   }
 
-  final function set_inst_is_loggedin($logged_in) {
-    if ($logged_in != true) {
-      $this->set_username(null);
-    }
-    $_SESSION['loggedin-inst'] = $logged_in;
+  final function set_inst_is_loggedin() {
+    $_SESSION['loggedin-inst'] = true;
+  }
+
+  final function set_business_is_loggedin() {
+    $_SESSION['loggedin-business'] = true;
   }
 
   /*
@@ -118,6 +127,14 @@ class base_page {
    */
   final function is_inst_logged_in() {
     return isset($_SESSION['loggedin-inst']) and $_SESSION['loggedin-inst'] == true;
+  }
+
+  final function is_business_logged_in() {
+    return isset($_SESSION['loggedin-business']) and $_SESSION['loggedin-business'] == true;
+  }
+
+  final function is_logged_in() {
+    return $this->is_inst_logged_in() || $this->is_business_logged_in();
   }
 
   final function set_username($un) {
@@ -183,7 +200,19 @@ class base_page {
      */
     if (
       $this->require_login() == true 
+      and $this->is_logged_in() == false) {
+      die("permission denied");
+    }
+
+    if (
+      $this->require_inst_login() == true 
       and $this->is_inst_logged_in() == false) {
+      die("permission denied");
+    }
+
+    if (
+      $this->require_business_login() == true 
+      and $this->is_business_logged_in() == false) {
       die("permission denied");
     }
 
