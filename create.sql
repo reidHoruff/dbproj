@@ -84,7 +84,7 @@ create table courses (
   id int not null AUTO_INCREMENT,
   code char(100) not null,
   required char(100) not null,
-  is_lab char(10) not null,
+  is_lab char(10) not null default 'n',
   title char(100) not null,
   description char(100),
   catalog int not null,

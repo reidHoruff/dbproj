@@ -5,7 +5,7 @@
  * but thats fine.
  */
 
-$username = "root3";
+$username = "root";
 $password = "root";
 $server = "localhost";
 $dbname = 'dbproj';
