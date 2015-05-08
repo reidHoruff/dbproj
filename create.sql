@@ -189,13 +189,25 @@ insert into eraiders (first_name, last_name, username, password)
 values ('Nelson', 'Rushton', 'n.rushton', 'foo');
 
 insert into eraiders (first_name, last_name, username, password)
-values ('Richard', 'Watson', 'r.watson', 'foor');
+values ('Richard', 'Watson', 'r.watson', 'foo');
+
+insert into eraiders (first_name, last_name, username, password)
+values ('Namin', 'Akbar', 'n.akbar', 'foo');
+
+insert into eraiders (first_name, last_name, username, password)
+values ('Susan', 'Mengel', 's.mengle', 'foo');
 
 insert into eraiders (first_name, last_name, username, password)
 values ('Y', 'Zhang', 'y.zhang', 'foo');
 
 insert into eraiders (first_name, last_name, username, password)
 values ('reid', 'horuff', 'thoruff', 'foo');
+
+insert into eraiders (first_name, last_name, username, password)
+values ('garrison', 'ritchie', 'gritchie', 'foo');
+
+insert into eraiders (first_name, last_name, username, password)
+values ('jonathan', 'montgomery', 'jmontgomery', 'foo');
 
 
 /**
