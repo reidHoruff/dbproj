@@ -9,24 +9,6 @@ const CURRENT_YEAR = 2015;
 const CURRENT_SEMESTER = 'Spring 2015';
 
 /**
- * list semesters
- */
-function list_semesters() {
-  $semesters = array();
-  for ($i = CURRENT_YEAR; $i < CURRENT_YEAR + 3; $i++) {
-    $str = 'Spring ' . $i;
-    $semesters[$str] = $str;
-    $str = 'Fall ' . $i;
-    $semesters[$str] = $str;
-    $str = 'Summer I ' . $i;
-    $semesters[$str] = $str;
-    $str = 'Summer II ' . $i;
-    $semesters[$str] = $str;
-  }
-  return $semesters;
-}
-
-/**
  * list TA hours
  */
 function list_ta_hours() {
@@ -37,6 +19,22 @@ function list_ta_hours() {
   return $hours;
 }
 
+function list_semesters() {
+  return array(
+    "fall" => "Fall",
+    "spring" => "Spring",
+    "summer1" => "Summer 1",
+    "summer2" => "Summer 2"
+  );
+}
+
+function list_years() {
+  $years = array();
+  for ($i=CURRENT_YEAR+1; $i > CURRENT_YEAR - 15; $i--) {
+    $years[$i] = $i;
+  }
+  return $years;
+}
 
 /**
  * aggregates all data from schemas for

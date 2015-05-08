@@ -32,47 +32,46 @@ class prefs_page extends base_page {
    * this block handles all POST requests
    */
   function handle_post($post) {
-    if (isset($post['action'])) {
 
-      /**
-       * action is to update course pref.
-       * old preference is deleted if exists
-       * and new one is added only if preference is not 'none'
-       */
-      if ($post['action'] == 'update_course_prefs') {
-        delete_existing_pref($this->get_username(), $post['course_id']);
-        if ($post['pref'] != 'none') {
-          mysql_insert_dang('prof_prefs', $post);
-        }
+    /**
+     * action is to update course pref.
+     * old preference is deleted if exists
+     * and new one is added only if preference is not 'none'
+     */
+    if ($post['action'] == 'update_course_prefs') {
+      delete_existing_pref($this->get_username(), $post['course_id']);
+      if ($post['pref'] != 'none') {
+        mysql_insert_dang('prof_prefs', $post);
       }
+    }
 
-      /*
-       * action is to update load distribution.
-       * A preference for this already exists because
-       * one was is created via a trigger when an professor
-       * is added.
-       */
-      else if ($post['action'] == 'update_load_pref') {
-        update_load_preference($this->get_username(), $post['pref']);
-      }
+    /*
+     * action is to update load distribution.
+     * A preference for this already exists because
+     * one was is created via a trigger when an professor
+     * is added.
+     */
+    else if ($post['action'] == 'update_load_pref') {
+      update_load_preference($this->get_username(), $post['pref']);
+    }
 
-      /*
-       * create special request
-       */
-      else if ($post['action'] == 'special_request') {
-        mysql_insert_dang('special_requesta', $post);
-        $this->set_message("special request submitted.");
-      }
+    /*
+     * create special request
+     */
+    else if ($post['action'] == 'special_request') {
+      mysql_insert_dang('special_requesta', $post);
+      $this->set_message("special request submitted.");
+    }
 
-      /*
-       * set semester
-       */
-      else if ($post['action'] == 'set_semester') {
-        $_SESSION['semester'] = $post['semester'];
-      }
+    /*
+     * set semester
+     */
+    else if ($post['action'] == 'set_semester') {
+      $_SESSION['semester'] = $post['semester'];
+      $_SESSION['year'] = $post['year'];
+    }
 
-      else {
-      }
+    else {
     }
   }
 
@@ -87,6 +86,11 @@ class prefs_page extends base_page {
       $semester = $_SESSION['semester'];
     }
 
+    $year = CURRENT_YEAR;
+    if (isset($_SESSION['year'])) {
+      $year = $_SESSION['year'];
+    }
+
     $sections = get_sections_assigned_to($this->get_username(), $semester);
 
     dom::h3('section-title', 'Assigned to me');
@@ -94,25 +98,27 @@ class prefs_page extends base_page {
       dom::push_form('prefs.php');
         dom::label('semester:');
         dom::dropdown('semester', list_semesters(), $semester, true);
+        dom::label('year:');
+        dom::dropdown('year', list_years(), $year, true);
         dom::hidden('action', 'set_semester');
         dom::br();
       dom::pop();
 
       dom::push_table();
         dom::push_tr();
-          dom::push_th('Course Code');
-          dom::push_th('Time');
-          dom::push_th('Days');
-          dom::push_th('Room');
-          dom::push_th('Building');
+          dom::th('Course Code');
+          dom::th('Time');
+          dom::th('Days');
+          dom::th('Room');
+          dom::th('Building');
         dom::pop();
         while ($r = mysql_fetch_assoc($sections)) {
           dom::push_tr();
-            dom::push_td($r['code']);
-            dom::push_td($r['time']);
-            dom::push_td($r['days']);
-            dom::push_td($r['room']);
-            dom::push_td($r['building']);
+            dom::td($r['code']);
+            dom::td($r['time']);
+            dom::td($r['days']);
+            dom::td($r['room']);
+            dom::td($r['building']);
           dom::pop();
         }
       dom::pop();

@@ -106,6 +106,10 @@ function business_login($username, $password) {
   return mysql_result(mysql_query("select count(*) from business_admins inner join eraiders on business_admins.username=eraiders.username where eraiders.username='$username' and eraiders.password='$password'"), 0);
 }
 
+function list_teaching_history($inst_id, $year) {
+  return mysql_query("select * from full_sections where inst_id='$inst_id' and year >= $year order by year");
+}
+
 /**
  * **we understand that this isn't necessarily
  * the best practice.**

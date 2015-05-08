@@ -32,11 +32,56 @@ class business_admin_page extends base_page {
    * this block handles all POST requests
    */
   function handle_post($post) {
+    $action = $post['action'];
+
+    if ($action == 'instructor_history') {
+      $n = $post['n'];
+      $instructor = $post['instructor'];
+      $_SESSION['instructor'] = $instructor;
+      $_SESSION['n'] = $n;
+    }
   }
 
   function render_body() {
-    dom::h3('', "hello " . $this->get_username());
+    list_prof_past_courses_form();
   }
+}
+
+function list_prof_past_courses_form() {
+  $courses = all_course_data();
+  $instructors = all_teachers_data();
+  $since_year = array();
+  for ($i = 1; $i < 30; $i++) {
+    $since_year[$i] = $i;
+  }
+
+  /*
+   * currently selected values
+   */
+  $current_instructor = get($_SESSION, 'instructor');
+  $current_n = get($_SESSION, 'n');
+
+  dom::h3('section-title', 'View Instructor\'s Teaching History');
+  dom::push_div('section');
+    dom::push_form();
+      dom::label('Instructor:');
+      dom::dropdown('instructor', $instructors, $current_instructor, true);
+      dom::label('Past Year:');
+      dom::dropdown('n', $since_year, $current_n, true);
+      dom::hidden('action', 'instructor_history');
+    dom::pop();
+
+    if (isset($_SESSION['instructor'])) {
+      $teaching_history = list_teaching_history(
+        $_SESSION['instructor'],
+        CURRENT_YEAR - $_SESSION['n']
+      );
+
+      while ($row = mysql_fetch_assoc($teaching_history)) {
+        dom::label($row['year']);
+      }
+    }
+  dom::pop();
 }
 
 (new business_admin_page())->dump();

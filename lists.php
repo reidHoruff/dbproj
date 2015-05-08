@@ -76,7 +76,7 @@ function list_sections() {
 class list_page extends base_page {
 
   function header_title() {
-    return 'TTU Administrator Panel - Lists for debugging';
+    return 'Lists for debugging';
   }
 
   function page_name() {
@@ -87,25 +87,23 @@ class list_page extends base_page {
    * this block handles all POST requests
    */
   function handle_post($post) {
-    if (isset($_POST['action'])) {
-      /* 
-       * action for adding a professor 
-       */
-      if ($_POST['action'] == 'sql') {
-      } 
-
-      else {
-      }
-      /*
-       * after POST save messages in session and redirect
-       * to same page but with a GET to avoid
-       * annoying POST resubmission messages
-       * on the browser's end.
-       */
-      if (mysql_error()) {
-        $this->set_error(mysql_error());
-      }
+    /* 
+     * action for adding a professor 
+     */
+    if ($_POST['action'] == 'sql') {
     } 
+
+    else {
+    }
+    /*
+     * after POST save messages in session and redirect
+     * to same page but with a GET to avoid
+     * annoying POST resubmission messages
+     * on the browser's end.
+     */
+    if (mysql_error()) {
+      $this->set_error(mysql_error());
+    }
   }
 
   function render_body() {

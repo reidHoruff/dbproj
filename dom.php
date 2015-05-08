@@ -178,16 +178,16 @@ class dom {
     self::push($tr);
   }
 
-  static function push_td($value) {
+  static function td($value) {
     global $dom;
     $td = $dom->createElement('td', $value);
-    self::push($td);
+    self::append($td);
   }
 
-  static function push_th($value) {
+  static function th($value) {
     global $dom;
     $td = $dom->createElement('th', $value);
-    self::push($td);
+    self::append($td);
   }
 
   static function push_div($class) {
@@ -197,7 +197,7 @@ class dom {
     self::push($div);
   }
 
-  static function push_form($action) {
+  static function push_form($action="") {
     global $dom;
     $form = $dom->createElement('form');
     $form->setAttribute('action', $action);

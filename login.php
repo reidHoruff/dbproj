@@ -24,36 +24,39 @@ class login_page extends base_page {
    * this block handles all POST requests
    */
   function handle_post($post) {
-    if (isset($post['action'])) {
-      /* 
-       * action for adding a professor 
-       */
-      if ($post['action'] == 'instructor_login') {
-        $u = $post['username'];
-        $p = $post['password'];
+    /* 
+     * action for adding a professor 
+     */
+    if ($post['action'] == 'instructor_login') {
+      $u = $post['username'];
+      $p = $post['password'];
 
-        if (instructor_login($u, $p) == 1) {
-            $this->set_inst_is_loggedin();
-            $this->set_username($u);
-        } 
-
-        if (business_login($u, $p) == 1) {
-            $this->set_business_is_loggedin();
-            $this->set_username($u);
-        } 
-
-        if ($this->is_logged_in()) {
+      if (instructor_login($u, $p) == 1) {
+          $this->set_inst_is_loggedin();
+          $this->set_username($u);
           header("Location: prefs.php");
-          die();
-        } else {
-          $this->set_error("unable to login.");
-        }
       } 
 
-      if (mysql_error()) {
-        $this->set_error(mysql_error());
+      if (business_login($u, $p) == 1) {
+          $this->set_business_is_loggedin();
+          $this->set_username($u);
+          header("Location: business.php");
+      } 
+
+      if ($this->is_logged_in()) {
+        /*
+         * die so that location: redirect
+         * takes effect
+         */
+        die();
+      } else {
+        $this->set_error("unable to login.");
       }
     } 
+
+    if (mysql_error()) {
+      $this->set_error(mysql_error());
+    }
   }
 
   function render_body() {

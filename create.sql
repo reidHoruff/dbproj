@@ -98,6 +98,7 @@ create table sections (
   days char(100) not null,
   section_number char(100) not null,
   semester char(100) not null,
+  year int,
   enrollment int not null,
   building char(100) not null,
   room char(100) not null,
@@ -128,6 +129,28 @@ create table instructor_to_section (
   foreign key (instructor_id) references instructors(id),
   foreign key (section_id) references sections(id)
 );
+
+CREATE VIEW full_sections AS 
+SELECT 
+  instructors.id AS inst_id,
+  capacity, 
+  days, 
+  section_number, 
+  semester, 
+  enrollment, 
+  lecture_type, 
+  time, 
+  crn,
+  eraiders.username AS inst_username,
+  first_name,
+  last_name,
+  year
+FROM
+courses 
+INNER JOIN sections ON courses.id=sections.course_id
+INNER JOIN instructor_to_section ON sections.id=instructor_to_section.section_id
+INNER JOIN instructors ON instructors.id=instructor_to_section.instructor_id
+INNER JOIN eraiders ON instructors.username=eraiders.username;
 
 create table ta_to_section (
   section_id int,
