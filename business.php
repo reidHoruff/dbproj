@@ -32,13 +32,16 @@ class business_admin_page extends base_page {
    * this block handles all POST requests
    */
   function handle_post($post) {
-    $action = $post['action'];
 
     if ($action == 'instructor_history') {
       $n = $post['n'];
       $instructor = $post['instructor'];
       $_SESSION['instructor'] = $instructor;
       $_SESSION['n'] = $n;
+    } else if ($action = 'see_teacher_prefs') {
+      $year = $post['year'];
+      $teacher_id = $post['teacher_id'];
+      $_SESSION['year'] = $year;
     }
   }
 

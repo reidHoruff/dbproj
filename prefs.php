@@ -91,7 +91,7 @@ class prefs_page extends base_page {
       $year = $_SESSION['year'];
     }
 
-    $sections = get_sections_assigned_to($this->get_username(), $semester);
+    $sections = get_sections_assigned_to($this->get_username(), $semester, $year);
 
     dom::h3('section-title', 'Assigned to me');
     dom::push_div('section');
@@ -107,18 +107,24 @@ class prefs_page extends base_page {
       dom::push_table();
         dom::push_tr();
           dom::th('Course Code');
+          dom::th('Title');
           dom::th('Time');
           dom::th('Days');
           dom::th('Room');
           dom::th('Building');
+          dom::th('Semester');
+          dom::th('Year');
         dom::pop();
         while ($r = mysql_fetch_assoc($sections)) {
           dom::push_tr();
             dom::td($r['code']);
+            dom::td($r['title']);
             dom::td($r['time']);
             dom::td($r['days']);
             dom::td($r['room']);
             dom::td($r['building']);
+            dom::td($r['semester']);
+            dom::td($r['year']);
           dom::pop();
         }
       dom::pop();

@@ -60,8 +60,7 @@ create table special_requests (
   course_id int,
   title char(255) not null,
   justification text not null,
-  foreign key (username) references instructors(username),
-  foreign key (username) references eraiders(username)
+  foreign key (username) references instructors(username)
 );
 
 /*
@@ -140,6 +139,10 @@ SELECT
   enrollment, 
   lecture_type, 
   time, 
+  code,
+  room,
+  building,
+  courses.title AS title,
   crn,
   eraiders.username AS inst_username,
   first_name,
@@ -238,6 +241,9 @@ insert into courses (code, required, title, description, catalog) values
 ('CS2364', 'y', 'data structures', '', 1);
 
 insert into courses (code, required, title, description, catalog) values
+('CS4320', 'y', 'database systems', '', 1);
+
+insert into courses (code, required, title, description, catalog) values
 ('CS3401', 'y', 'design and analasys of algorighms', '', 1);
 
 insert into courses (code, required, title, description, catalog) values
@@ -249,6 +255,9 @@ data books
 
 insert into books (isbn, title, publisher, edition) values
 ('3652037357', 'Intro to Java', 'McGraw', '12');
+
+insert into books (isbn, title, publisher, edition) values
+('748834759', 'Algorithms', 'McGraw', '12');
 
 insert into books (isbn, title, publisher, edition) values
 ('65247534', 'Intro to C++', 'McGraw', '12');
@@ -270,3 +279,46 @@ insert into tas (first_name, last_name) values
 insert into tas (first_name, last_name) values
 ('Reid', 'Horuff');
 
+/*
+sections
+*/
+
+/*
+  course_id int,
+  capacity int not null,
+  days char(100) not null,
+  section_number char(100) not null,
+  semester char(100) not null,
+  year int,
+  enrollment int not null,
+  building char(100) not null,
+  room char(100) not null,
+  lecture_type char(100) not null,
+  time char(255) not null,
+  crn char(255) not null,
+  foreign key (course_id) references courses(id),
+  primary key (id)
+*/
+
+/*
+create sections and link to zhang (id = 3)
+*/
+insert into sections (course_id, capacity, days, section_number, semester, year, enrollment, building, room, lecture_type, time, crn) 
+values
+(1, 35, 'mwf', '001', 'fall', 2015, 30, 'Computer Science', '205', 'ftf', '9:00am - 9:50am', '52432');
+insert into instructor_to_section (instructor_id, section_id) values (3, 1);
+
+insert into sections (course_id, capacity, days, section_number, semester, year, enrollment, building, room, lecture_type, time, crn) 
+values
+(2, 35, 'mwf', '001', 'fall', 2014, 30, 'Computer Science', '205', 'ftf', '9:00am - 9:50am', '46363');
+insert into instructor_to_section (instructor_id, section_id) values (3, 2);
+
+insert into sections (course_id, capacity, days, section_number, semester, year, enrollment, building, room, lecture_type, time, crn) 
+values
+(2, 35, 'mwf', '001', 'fall', 2013, 30, 'Computer Science', '205', 'ftf', '10:00am - 10:50am', '28583');
+insert into instructor_to_section (instructor_id, section_id) values (3, 3);
+
+insert into sections (course_id, capacity, days, section_number, semester, year, enrollment, building, room, lecture_type, time, crn) 
+values
+(2, 35, 'mwf', '001', 'fall', 2012, 30, 'Computer Science', '205', 'ftf', '10:00am - 10:50am', '32222');
+insert into instructor_to_section (instructor_id, section_id) values (3, 4);
