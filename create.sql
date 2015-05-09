@@ -3,9 +3,14 @@ create database dbproj;
 use dbproj;
 
 /*
-passwords shouldn't be stored in plaintext...
-*/
+ *passwords shouldn't be stored in plaintext...
+ */
 
+ 
+ /*
+  * Eraiders account table includes eraider account info
+  * and name.
+  */
 create table eraiders (
   username char(255) not null,
   first_name char(255) not null,
@@ -14,6 +19,12 @@ create table eraiders (
   primary key (username)
 );
 
+
+/*
+ * Instructors table includes instructors info.
+ * Instructors must have an eraider account before insertion.
+ * The tables eraiders and instructors link on username.
+ */
 create table instructors (
   id int not null AUTO_INCREMENT,
   username char(255) not null,
@@ -24,6 +35,11 @@ create table instructors (
   primary key (id)
 );
 
+/*
+ * Site admins with elevated access to debugging
+ * Buisiness admins must have eraider account before insertion.
+ * The tables eraiders and business admin link on username.
+ */
 create table business_admins (
   id int not null AUTO_INCREMENT,
   username char(255) not null,
@@ -31,19 +47,23 @@ create table business_admins (
   primary key (id)
 );
 
+/*
+ * This table denotes what semester the teacher has a preference for
+ * teaching in. It links to the instructors table on username.
+ */
 create table load_preference (
   username char(255) not null,
   load_preference char(255) not null,
   /*
   fall, spring, none
   */
-  foreign key (username) references eraiders(username)
+  foreign key (username) references instructors(username)
 );
 
-/**
-this trigger creates a 'load_prefernce' row when an instructor
-is created of type instuctor'
-*/
+/*
+ *this trigger creates a 'load_prefernce' row when an instructor
+ *is created of type instuctor'
+ */
 delimiter |
 create trigger default_load_preference after insert on instructors 
   for each row begin
@@ -55,24 +75,31 @@ create trigger default_load_preference after insert on instructors
   end|
 delimiter ;
 
+/*
+ * This table denotes a request for a teacher to teach a class
+ * and the justification for why they believe they should teach the
+ * class. The table links to the instructors table on username.
+ */
 create table special_requests (
   username char(255) not null,
   course_id int,
   title char(255) not null,
   justification text not null,
-  foreign key (username) references instructors(username),
-  foreign key (username) references eraiders(username)
+  foreign key (username) references instructors(username)
 );
 
 /*
-this vie gives us easy access to the professors,
-that is, instructors of type professor [tenured, or untenured]
-*/
+ * This view gives us easy access to the professors,
+ * that is, instructors of type professor [tenured, or untenured]
+ */
 create VIEW profs AS SELECT first_name from
 eraiders INNER JOIN instructors ON
 eraiders.username=instructors.username 
 WHERE instructors.type='tenured' OR instructors.type='untenured';
 
+/*
+ * TA's table 
+ */
 create table tas (
   id int not null AUTO_INCREMENT,
   first_name char(255) not null,
@@ -104,7 +131,7 @@ create table sections (
   room char(100) not null,
   lecture_type char(100) not null,
   time char(255) not null,
-  crn char(255) not null,
+  crn char(5) not null,
   foreign key (course_id) references courses(id),
   primary key (id)
 );
@@ -181,9 +208,9 @@ SELECT * FROM
 courses LEFT JOIN prof_prefs on courses.id=prof_prefs.course_id;
 
 
-/**
-data eraiders
-*/
+/*
+ * Dummy data eraider inserts
+ */
 
 insert into eraiders (first_name, last_name, username, password)
 values ('Nelson', 'Rushton', 'n.rushton', 'foo');
@@ -210,9 +237,9 @@ insert into eraiders (first_name, last_name, username, password)
 values ('jonathan', 'montgomery', 'jmontgomery', 'foo');
 
 
-/**
-data instructors
-*/
+/*
+ *dummy data instructors inserts
+ */
 
 insert into instructors (username, title, type, date_joined)
 values ('n.rushton', 'CS Professor', 'tenured', '2000');
@@ -224,9 +251,9 @@ insert into instructors (username, title, type, date_joined)
 values ('y.zhang', 'CS Professor', 'tenured', '2000');
 
 
-/**
-data courses
-*/
+/*
+ *data courses
+ */
 
 insert into courses (code, required, title, description, catalog) values
 ('CS1401', 'y', 'programming principles 1', '', 1);
@@ -257,15 +284,15 @@ insert into books (isbn, title, publisher, edition) values
 ('734730745', 'On Calculus Principles', 'McGraw', '100');
 
 
-/**
-data tas
-*/
+/*
+ *data tas
+ */
 
 insert into tas (first_name, last_name) values
 ('Garrison', 'Ritchie');
 
 insert into tas (first_name, last_name) values
-('Jonathon', 'Montgomery');
+('Jonathan', 'Montgomery');
 
 insert into tas (first_name, last_name) values
 ('Reid', 'Horuff');
