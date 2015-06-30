@@ -24,17 +24,33 @@ argglobal
 silent! argdel *
 edit /var/www/html/dbproj/logout.php
 set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
 set nosplitbelow
 set nosplitright
 wincmd t
 set winheight=1 winwidth=1
+wincmd =
 argglobal
-let s:l = 7 - ((6 * winheight(0) + 25) / 50)
+let s:l = 10 - ((9 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-7
-normal! 04|
+10
+normal! 023|
+wincmd w
+argglobal
+edit /var/www/html/dbproj/logout.php
+let s:l = 25 - ((23 * winheight(0) + 26) / 52)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+25
+normal! 0
+wincmd w
+wincmd =
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf
 endif
